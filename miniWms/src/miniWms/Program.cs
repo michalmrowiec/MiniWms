@@ -12,7 +12,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddDbContext<MiniWmsDbContext>(options =>
-    options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=CarRentalDb;Trusted_Connection=True;"));
+    options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MiniWmsDb;Trusted_Connection=True;"));
 
 var app = builder.Build();
 

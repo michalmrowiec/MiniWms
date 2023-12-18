@@ -20,7 +20,9 @@
         public Employee? ModifiedByEmployee { get; set; }
         public DocumentType? DocumentType { get; set; }
         public IList<DocumentEntry> DocumentEntries { get; set; } = new List<DocumentEntry>();
-        public Contractor? Contractor { get; set; }
-        public Warehouse? Warehouse { get; set; }
+        public Contractor? ContractorSupplier { get; set; }
+        public Contractor? ContractorRecipient { get; set; }
+        public Warehouse? WarehouseSupplier { get; set; }
+        public Warehouse? WarehouseRecipient { get; set; }
     }
 }

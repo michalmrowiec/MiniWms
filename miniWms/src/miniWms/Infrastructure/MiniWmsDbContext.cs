@@ -5,6 +5,20 @@ namespace miniWms.Infrastructure
 {
     public class MiniWmsDbContext : DbContext
     {
+        public DbSet<Contractor> Contractors { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<DocumentType> DocumentTypes { get; set; }
+        public DbSet<DocumentEntry> DocumentEntries { get; set; }
+        public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<WarehouseEntry> WarehouseEntries { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Role> Roles { get; set; }
+
+        public MiniWmsDbContext(DbContextOptions<MiniWmsDbContext> dbContextOptions) : base(dbContextOptions)
+        { }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Document>(eb =>
@@ -13,19 +27,19 @@ namespace miniWms.Infrastructure
                 .WithMany(dt => dt.Documents)
                 .HasForeignKey(d => d.DocumentTypeId);
 
-                eb.HasOne(d => d.Contractor)
+                eb.HasOne(d => d.ContractorSupplier)
                 .WithMany(c => c.DocumentsAsSupplier)
                 .HasForeignKey(d => d.SupplierId);
 
-                eb.HasOne(d => d.Contractor)
+                eb.HasOne(d => d.ContractorRecipient)
                 .WithMany(c => c.DocumentsAsRecipient)
                 .HasForeignKey(d => d.RecipientId);
 
-                eb.HasOne(d => d.Warehouse)
+                eb.HasOne(d => d.WarehouseSupplier)
                 .WithMany(w => w.DocumentsAsSupplier)
                 .HasForeignKey(d => d.SupplierId);
 
-                eb.HasOne(d => d.Warehouse)
+                eb.HasOne(d => d.WarehouseRecipient)
                 .WithMany(w => w.DocumentsAsRecipient)
                 .HasForeignKey(d => d.RecipientId);
             });
@@ -73,7 +87,7 @@ namespace miniWms.Infrastructure
 
                 eb.HasMany(e => e.CreatedCategories)
                 .WithOne(ca => ca.CreatedByEmployee)
-                .HasForeignKey(ca => ca.CreatedByEmployee);
+                .HasForeignKey(ca => ca.CreatedBy);
 
                 eb.HasMany(e => e.ModifiedCategories)
                 .WithOne(ca => ca.ModifiedByEmployee)
