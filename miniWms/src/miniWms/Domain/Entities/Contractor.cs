@@ -19,5 +19,9 @@
         public Guid? CreatedBy { get; set; }
         public Guid? ModifiedBy { get; set; }
 
+        public Employee? CreatedByEmployee { get; set; }
+        public Employee? ModifiedByEmployee { get; set; }
+        public IList<Document>? DocumentsAsSupplier { get; set; }
+        public IList<Document>? DocumentsAsRecipient { get; set; }
     }
 }

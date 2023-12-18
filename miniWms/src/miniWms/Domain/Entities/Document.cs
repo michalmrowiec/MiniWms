@@ -4,8 +4,8 @@
     {
         public Guid DocumentId { get; set; }
         public string DocumentTypeId { get; set; }
-        public Guid? From { get; set; }
-        public Guid? To { get; set; }
+        public Guid? SupplierId { get; set; }
+        public Guid? RecipientId { get; set; }
         public string? Country { get; set; }
         public string? City { get; set; }
         public string? Region { get; set; }
@@ -16,7 +16,11 @@
         public Guid? CreatedBy { get; set; }
         public Guid? ModifiedBy { get; set; }
 
+        public Employee? CreatedByEmployee { get; set; }
+        public Employee? ModifiedByEmployee { get; set; }
         public DocumentType? DocumentType { get; set; }
-        public IList<DocumentEntry>? DocumentEntries { get; set; }
+        public IList<DocumentEntry> DocumentEntries { get; set; } = new List<DocumentEntry>();
+        public Contractor? Contractor { get; set; }
+        public Warehouse? Warehouse { get; set; }
     }
 }

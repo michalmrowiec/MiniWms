@@ -13,6 +13,11 @@
         public Guid? CreatedBy { get; set; }
         public Guid? ModifiedBy { get; set; }
 
+        public Employee? CreatedByEmployee { get; set; }
+        public Employee? ModifiedByEmployee { get; set; }
         public Category? Category { get; set; }
+        public IList<DocumentEntry> DocumentEntries { get; set; } = new List<DocumentEntry>();
+        public IList<WarehouseEntry> WarehouseEntries { get; set; } = new List<WarehouseEntry>();
+
     }
 }

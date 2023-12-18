@@ -14,6 +14,10 @@
         public Guid? CreatedBy { get; set; }
         public Guid? ModifiedBy { get; set; }
 
-        public IList<WarehouseEntry>? WarehouseEntries { get; set; }
+        public Employee? CreatedByEmployee { get; set; }
+        public Employee? ModifiedByEmployee { get; set; }
+        public IList<WarehouseEntry> WarehouseEntries { get; set; } = new List<WarehouseEntry>();
+        public IList<Document> DocumentsAsSupplier { get; set; } = new List<Document>();
+        public IList<Document> DocumentsAsRecipient { get; set; } = new List<Document>();
     }
 }

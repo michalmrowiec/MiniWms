@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using miniWms.Client.Pages;
 using miniWms.Components;
+using miniWms.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddDbContext<MiniWmsDbContext>(options =>
+    options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=CarRentalDb;Trusted_Connection=True;"));
 
 var app = builder.Build();
 
