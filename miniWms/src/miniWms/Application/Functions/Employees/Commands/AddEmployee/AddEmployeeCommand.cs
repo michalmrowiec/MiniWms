@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace miniWms.Application.Functions.Employees.Commands
+namespace miniWms.Application.Functions.Employees.Commands.AddEmployee
 {
-    public class AddEmployeeCommand : IRequest<AddEmployeeResponse>
+    public class AddEmployeeCommand : IRequest<EmployeeResponse>
     {
         public string RoleId { get; set; }
         public string FirstName { get; set; }

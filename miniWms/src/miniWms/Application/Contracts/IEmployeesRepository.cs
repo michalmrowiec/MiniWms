@@ -1,4 +1,5 @@
 ﻿using miniWms.Domain.Entities;
+using miniWms.Domain.Models;
 
 namespace miniWms.Application.Contracts
 {
@@ -6,5 +7,9 @@ namespace miniWms.Application.Contracts
     {
         Task<Employee> GetEmployeeByEmailAddressAsync(string email);
         Task<Employee> AddEmployeeAsync(Employee employee);
+
+        Task<Employee> AddEmployeeAsync(AddEmployeeModel employee);
+        Task<JwtToken> LoginEmployeeAsync(LoginEmployeeModel employee);
+
     }
 }

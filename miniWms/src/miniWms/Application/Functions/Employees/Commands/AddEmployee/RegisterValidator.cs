@@ -2,7 +2,7 @@
 using MediatR;
 using miniWms.Application.Functions.Employees.Queries.GetEmployeeByEmail;
 
-namespace miniWms.Application.Functions.Employees.Commands
+namespace miniWms.Application.Functions.Employees.Commands.AddEmployee
 {
     public class RegisterValidator : AbstractValidator<AddEmployeeCommand>
     {

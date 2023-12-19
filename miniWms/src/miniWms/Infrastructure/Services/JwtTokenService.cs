@@ -1,11 +1,10 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using miniWms.Domain.Entities;
-using miniWms.Infrastructure;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace miniWms.Application.Functions.Employees
+namespace miniWms.Infrastructure.Services
 {
     public class JwtTokenService
     {
