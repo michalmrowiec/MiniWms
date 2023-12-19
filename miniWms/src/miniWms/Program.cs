@@ -1,8 +1,13 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using miniWms.Application.Contracts;
 using miniWms.Client.Pages;
 using miniWms.Components;
+using miniWms.Domain.Entities;
 using miniWms.Infrastructure;
+using miniWms.Infrastructure.Repositories;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +16,39 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+
+builder.Services.AddControllersWithViews();
+
+var authenticationSettings = new AuthenticationSettings();
+builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
+
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = "Bearer";
+    option.DefaultScheme = "Bearer";
+    option.DefaultChallengeScheme = "Bearer";
+}).AddJwtBearer(cfg =>
+{
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+    cfg.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = authenticationSettings.JwtIssuer,
+        ValidAudience = authenticationSettings.JwtIssuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+        ValidateLifetime = true
+    };
+});
+
+builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>();
+
+builder.Services.AddSingleton(authenticationSettings);
+
 builder.Services.AddDbContext<MiniWmsDbContext>(options =>
     options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MiniWmsDb;Trusted_Connection=True;"));
+
+builder.Services.AddScoped(typeof(IEmployeesRepository), typeof(EmployeesRepository));
 
 var app = builder.Build();
 
