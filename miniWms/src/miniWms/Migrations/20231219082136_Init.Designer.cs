@@ -12,7 +12,7 @@ using miniWms.Infrastructure;
 namespace miniWms.Migrations
 {
     [DbContext(typeof(MiniWmsDbContext))]
-    [Migration("20231218121843_Init")]
+    [Migration("20231219082136_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -298,6 +298,10 @@ namespace miniWms.Migrations
 
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
