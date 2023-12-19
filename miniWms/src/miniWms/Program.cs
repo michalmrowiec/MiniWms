@@ -16,6 +16,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 
 builder.Services.AddControllersWithViews();
@@ -52,10 +54,31 @@ builder.Services.AddScoped(typeof(IEmployeesRepository), typeof(EmployeesReposit
 
 var app = builder.Build();
 
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<MiniWmsDbContext>();
+var pendingMigrations = dbContext.Database.GetPendingMigrations();
+if (pendingMigrations.Any())
+{
+    dbContext.Database.Migrate();
+}
+
+if (!dbContext.Roles.Any())
+{
+    List<Role> defaultRoles =
+    [
+        new Role() { RoleId = "adm", RoleName = "Admin", CreatedAt= DateTime.Now, ModifiedAt = DateTime.Now },
+        new Role() { RoleId = "mng", RoleName = "Manager", CreatedAt= DateTime.Now, ModifiedAt = DateTime.Now },
+        new Role() { RoleId = "ope", RoleName = "Operator", CreatedAt= DateTime.Now, ModifiedAt = DateTime.Now }
+    ];
+    dbContext.Roles.AddRange(defaultRoles);
+    dbContext.SaveChanges();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MiniWmsAPI"));
 }
 else
 {
@@ -64,10 +87,18 @@ else
     app.UseHsts();
 }
 
+app.UseAuthentication();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()

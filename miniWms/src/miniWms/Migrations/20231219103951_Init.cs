@@ -129,7 +129,7 @@ namespace miniWms.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HaveToChangePassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HaveToChangePassword = table.Column<bool>(type: "bit", nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),

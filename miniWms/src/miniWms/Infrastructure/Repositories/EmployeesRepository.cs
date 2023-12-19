@@ -1,18 +1,32 @@
-﻿using miniWms.Application.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using miniWms.Application.Contracts;
 using miniWms.Domain.Entities;
 
 namespace miniWms.Infrastructure.Repositories
 {
     public class EmployeesRepository : IEmployeesRepository
     {
-        public Task<Employee> AddEmployeeAsync(Employee employee)
+        private readonly MiniWmsDbContext _context;
+        public EmployeesRepository(MiniWmsDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<Employee> GetEmployeeByEmailAddressAsync(string email)
+        public async Task<Employee> AddEmployeeAsync(Employee employee)
         {
-            throw new NotImplementedException();
+            await _context.Employees.AddAsync(employee);
+            await _context.SaveChangesAsync();
+
+            var newEmployee =  await _context.Employees.FirstOrDefaultAsync(u => u.EmailAddress == employee.EmailAddress);
+            
+            return newEmployee == null ? new() : newEmployee;
+
+        }
+
+        public async Task<Employee> GetEmployeeByEmailAddressAsync(string email)
+        {
+            var employee = await _context.Employees.FirstOrDefaultAsync(u => u.EmailAddress == email);
+            return employee == null ? new() : employee;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace miniWms.Application.Functions.Employees.Commands
                 .Custom((value, context) =>
                 {
                     var user = _mediator.Send(new GetEmployeeByEmailQuery(value)).Result;
-                    if (user != null)
+                    if (user.EmailAddress != null)
                         context.AddFailure("Email", "Email is taken");
                 });
 
