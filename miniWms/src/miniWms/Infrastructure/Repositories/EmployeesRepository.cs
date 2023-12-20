@@ -7,17 +7,23 @@ using miniWms.Infrastructure.Services;
 
 namespace miniWms.Infrastructure.Repositories
 {
-    public class EmployeesRepository : IEmployeesRepository
+    public class EmployeesRepository : IEmployeeRepository
     {
         private readonly MiniWmsDbContext _context;
         private readonly AuthenticationSettings _authenticationSettings;
         private readonly IPasswordHasher<Employee> _passwordHasher;
+        private readonly ILogger<EmployeesRepository> _logger;
 
-        public EmployeesRepository(MiniWmsDbContext context, AuthenticationSettings authenticationSettings, IPasswordHasher<Employee> passwordHasher)
+        public EmployeesRepository(
+            MiniWmsDbContext context,
+            AuthenticationSettings authenticationSettings,
+            IPasswordHasher<Employee> passwordHasher,
+            ILogger<EmployeesRepository> logger)
         {
             _context = context;
             _authenticationSettings = authenticationSettings;
             _passwordHasher = passwordHasher;
+            _logger = logger;
         }
 
         public async Task<bool> ChangePassword(Guid employeeId, string newPassword)
@@ -79,7 +85,10 @@ namespace miniWms.Infrastructure.Repositories
 
         public async Task<JwtToken> LoginEmployeeAsync(LoginEmployeeModel loginEmployee)
         {
-            var employee = await GetEmployeeByEmailAddressAsync(loginEmployee.EmailAddress);
+            var employee = await _context
+                .Employees
+                .Include(e => e.Role)
+                .FirstOrDefaultAsync(u => u.EmailAddress == loginEmployee.EmailAddress) ?? new();
 
             if (employee.EmailAddress == null)
             {

@@ -6,10 +6,10 @@ namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
 {
     public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, EmployeeResponse>
     {
-        private readonly IEmployeesRepository _employeesRepository;
+        private readonly IEmployeeRepository _employeesRepository;
         private readonly IMediator _mediator;
 
-        public CreateEmployeeCommandHandler(IEmployeesRepository employeesRepository, IMediator mediator)
+        public CreateEmployeeCommandHandler(IEmployeeRepository employeesRepository, IMediator mediator)
         {
             _employeesRepository = employeesRepository;
             _mediator = mediator;

@@ -3,7 +3,7 @@ using miniWms.Domain.Models;
 
 namespace miniWms.Application.Contracts
 {
-    public interface IEmployeesRepository
+    public interface IEmployeeRepository
     {
         Task<Employee> GetEmployeeByEmailAddressAsync(string email);
         Task<Employee> CreateEmployeeAsync(CraeteEmployeeModel employee);

@@ -18,7 +18,10 @@ namespace miniWms.Api.Controllers
         private readonly ILogger<EmployeeController> _logger;
         private readonly IUserContextService _userContextService;
 
-        public EmployeeController(ILogger<EmployeeController> logger, IMediator mediator, IUserContextService userContextService)
+        public EmployeeController(
+            ILogger<EmployeeController> logger,
+            IMediator mediator,
+            IUserContextService userContextService)
         {
             _mediator = mediator;
             _logger = logger;

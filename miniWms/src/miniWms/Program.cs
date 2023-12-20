@@ -53,7 +53,7 @@ builder.Services.AddSingleton(authenticationSettings);
 builder.Services.AddDbContext<MiniWmsDbContext>(options =>
     options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MiniWmsDb;Trusted_Connection=True;"));
 
-builder.Services.AddScoped(typeof(IEmployeesRepository), typeof(EmployeesRepository));
+builder.Services.AddScoped(typeof(IEmployeeRepository), typeof(EmployeesRepository));
 
 var app = builder.Build();
 

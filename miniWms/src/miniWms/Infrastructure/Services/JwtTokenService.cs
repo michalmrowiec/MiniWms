@@ -22,7 +22,7 @@ namespace miniWms.Infrastructure.Services
                 new(ClaimTypes.NameIdentifier, employee.EmployeeId.ToString()),
                 new(ClaimTypes.Name, employee.FirstName),
                 new(ClaimTypes.Surname, employee.LastName),
-                new(ClaimTypes.Role, employee.RoleId),
+                new(ClaimTypes.Role, employee.Role!.RoleName),
                 new(ClaimTypes.Email, employee.EmailAddress),
                 new(ClaimTypes.MobilePhone, employee.PhoneNumber),
             };

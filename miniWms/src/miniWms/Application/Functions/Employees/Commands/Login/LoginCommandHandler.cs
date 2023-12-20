@@ -6,9 +6,9 @@ namespace miniWms.Application.Functions.Employees.Commands.Login
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, EmployeeResponse>
     {
-        private readonly IEmployeesRepository _employeesRepository;
+        private readonly IEmployeeRepository _employeesRepository;
 
-        public LoginCommandHandler(IEmployeesRepository employeesRepository)
+        public LoginCommandHandler(IEmployeeRepository employeesRepository)
         {
             _employeesRepository = employeesRepository;
         }
