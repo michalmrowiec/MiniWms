@@ -1,6 +1,6 @@
 ﻿namespace miniWms.Domain.Models
 {
-    public class AddEmployeeModel
+    public class CraeteEmployeeModel
     {
         public string RoleId { get; set; }
         public string FirstName { get; set; }

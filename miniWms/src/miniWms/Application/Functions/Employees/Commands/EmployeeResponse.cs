@@ -23,5 +23,8 @@ namespace miniWms.Application.Functions.Employees.Commands
 
         public EmployeeResponse(ValidationResult validationResult) : base(validationResult)
         { }
+
+        public EmployeeResponse() : base()
+        { }
     }
 }

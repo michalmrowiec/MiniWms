@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using miniWms.Api.Services;
 using miniWms.Application.Contracts;
 using miniWms.Client.Pages;
 using miniWms.Components;
@@ -19,6 +20,8 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllersWithViews();
 

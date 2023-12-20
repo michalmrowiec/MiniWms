@@ -2,20 +2,20 @@
 using miniWms.Application.Contracts;
 using miniWms.Domain.Models;
 
-namespace miniWms.Application.Functions.Employees.Commands.AddEmployee
+namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
 {
-    public class AddEmployeeCommandHandler : IRequestHandler<AddEmployeeCommand, EmployeeResponse>
+    public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, EmployeeResponse>
     {
         private readonly IEmployeesRepository _employeesRepository;
         private readonly IMediator _mediator;
 
-        public AddEmployeeCommandHandler(IEmployeesRepository employeesRepository, IMediator mediator)
+        public CreateEmployeeCommandHandler(IEmployeesRepository employeesRepository, IMediator mediator)
         {
             _employeesRepository = employeesRepository;
             _mediator = mediator;
         }
 
-        public async Task<EmployeeResponse> Handle(AddEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<EmployeeResponse> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             RegisterValidator validator = new(_mediator);
             var validationResult = validator.Validate(request);
@@ -25,7 +25,7 @@ namespace miniWms.Application.Functions.Employees.Commands.AddEmployee
                 return new EmployeeResponse(validationResult);
             }
 
-            var newEmployee = new AddEmployeeModel()
+            var newEmployee = new CraeteEmployeeModel()
             {
                 RoleId = request.RoleId,
                 FirstName = request.FirstName,
@@ -43,7 +43,7 @@ namespace miniWms.Application.Functions.Employees.Commands.AddEmployee
                 CreatedBy = request.CreatedBy,
             };
 
-            var jwtToken = await _employeesRepository.AddEmployeeAsync(newEmployee);
+            var jwtToken = await _employeesRepository.CreateEmployeeAsync(newEmployee);
 
             if (jwtToken.EmailAddress == null)
             {

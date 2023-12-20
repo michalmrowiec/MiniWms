@@ -1,9 +1,6 @@
-﻿using Azure.Core;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using miniWms.Application.Contracts;
-using miniWms.Application.Functions.Employees.Commands;
 using miniWms.Domain.Entities;
 using miniWms.Domain.Models;
 using miniWms.Infrastructure.Services;
@@ -23,17 +20,22 @@ namespace miniWms.Infrastructure.Repositories
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<Employee> AddEmployeeAsync(Employee employee)
+        public async Task<bool> ChangePassword(Guid employeeId, string newPassword)
         {
-            await _context.Employees.AddAsync(employee);
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.EmployeeId == employeeId);
+
+            if (employee == null)
+            {
+                return false;
+            }
+
+            employee.PasswordHash = _passwordHasher.HashPassword(employee, newPassword);
             await _context.SaveChangesAsync();
 
-            var newEmployee = await _context.Employees.FirstOrDefaultAsync(u => u.EmailAddress == employee.EmailAddress);
-
-            return newEmployee == null ? new() : newEmployee;
+            return true;
         }
 
-        public async Task<Employee> AddEmployeeAsync(AddEmployeeModel employee)
+        public async Task<Employee> CreateEmployeeAsync(CraeteEmployeeModel employee)
         {
             var newEmployee = new Employee()
             {
@@ -59,9 +61,9 @@ namespace miniWms.Infrastructure.Repositories
             await _context.Employees.AddAsync(newEmployee);
             await _context.SaveChangesAsync();
 
-            var addedEmployee = await _context.Employees.FirstOrDefaultAsync(u => u.EmailAddress == employee.EmailAddress);
+            var addedEmployee = await GetEmployeeByEmailAddressAsync(newEmployee.EmailAddress);
 
-            if (addedEmployee == null)
+            if (addedEmployee.EmailAddress == null)
             {
                 return new();
             }
@@ -72,14 +74,14 @@ namespace miniWms.Infrastructure.Repositories
         public async Task<Employee> GetEmployeeByEmailAddressAsync(string email)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(u => u.EmailAddress == email);
-            return employee == null ? new() : employee;
+            return employee ?? new();
         }
 
         public async Task<JwtToken> LoginEmployeeAsync(LoginEmployeeModel loginEmployee)
         {
-            var employee = await _context.Employees.FirstOrDefaultAsync(u => u.EmailAddress == loginEmployee.EmailAddress);
+            var employee = await GetEmployeeByEmailAddressAsync(loginEmployee.EmailAddress);
 
-            if (employee == null)
+            if (employee.EmailAddress == null)
             {
                 return new();
             }
@@ -95,10 +97,9 @@ namespace miniWms.Infrastructure.Repositories
             JwtToken jwtToken = new()
             {
                 UserEmail = employee.EmailAddress,
-                Token = tokenService.GenerateJwt(employee)
+                Token = tokenService.GenerateJwt(employee),
+                HaveToChangePassword = employee.HaveToChangePassword
             };
-
-            jwtToken.HaveToChangePassword = true;
 
             return jwtToken;
         }

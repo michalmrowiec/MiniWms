@@ -6,10 +6,8 @@ namespace miniWms.Application.Contracts
     public interface IEmployeesRepository
     {
         Task<Employee> GetEmployeeByEmailAddressAsync(string email);
-        Task<Employee> AddEmployeeAsync(Employee employee);
-
-        Task<Employee> AddEmployeeAsync(AddEmployeeModel employee);
+        Task<Employee> CreateEmployeeAsync(CraeteEmployeeModel employee);
         Task<JwtToken> LoginEmployeeAsync(LoginEmployeeModel employee);
-
+        Task<bool> ChangePassword(Guid employeeId, string newPassword);
     }
 }
