@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using miniWms.Api.Services;
+using miniWms.Application.Functions.Warehouses.Queries.GetAllWarehouses;
+using miniWms.Domain.Entities;
 
 namespace miniWms.Api.Controllers
 {
@@ -22,6 +24,12 @@ namespace miniWms.Api.Controllers
             _mediator = mediator;
             _logger = logger;
             _userContextService = userContextService;
+        }
+
+        [HttpGet("all")]
+        public async Task<ActionResult<List<Warehouse>>> GetAllWarehouses()
+        {
+            return Ok(await _mediator.Send(new GetAllWarehousesQuery()));
         }
     }
 }

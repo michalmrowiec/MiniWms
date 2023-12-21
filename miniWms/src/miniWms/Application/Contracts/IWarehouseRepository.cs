@@ -8,7 +8,7 @@ namespace miniWms.Application.Contracts
         Task<Warehouse> UpdateWarehouseAsync(Warehouse Warehouse);
         Task<bool> DeleteWarehouseAsync(Guid id);
         Task<Warehouse> GetWarehouseByIdAsync(Guid id); // with products?
-        Task<Warehouse> GetAllWarehousesAsync();
+        Task<IList<Warehouse>> GetAllWarehousesAsync();
 
     }
 }

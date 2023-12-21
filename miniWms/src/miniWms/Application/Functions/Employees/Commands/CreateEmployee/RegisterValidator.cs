@@ -12,7 +12,7 @@ namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
         {
             _mediator = mediator;
 
-            RuleFor(r => r.EmailAddress)
+            RuleFor(e => e.EmailAddress)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required")
@@ -25,7 +25,7 @@ namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
                         context.AddFailure("Email", "Email is taken");
                 });
 
-            RuleFor(r => r.Password)
+            RuleFor(e => e.Password)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required")

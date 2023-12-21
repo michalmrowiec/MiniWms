@@ -31,6 +31,9 @@ namespace miniWms.Api.Controllers
         [HttpPost("create-employee")]
         public async Task<ActionResult> CreateEmployee([FromBody] CreateEmployeeCommand registerCommand)
         {
+            if (_userContextService.GetUserId is not null)
+                registerCommand.CreatedBy = (Guid)_userContextService.GetUserId;
+
             var result = await _mediator.Send(registerCommand);
 
             if (result.Success)
