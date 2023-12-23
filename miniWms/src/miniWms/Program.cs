@@ -53,7 +53,8 @@ builder.Services.AddSingleton(authenticationSettings);
 builder.Services.AddDbContext<MiniWmsDbContext>(options =>
     options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MiniWmsDb;Trusted_Connection=True;"));
 
-builder.Services.AddScoped(typeof(IEmployeeRepository), typeof(EmployeesRepository));
+builder.Services.AddScoped(typeof(IEmployeeRepository), typeof(EmployeeRepository));
+builder.Services.AddScoped(typeof(IWarehouseRepository), typeof(WarehouseRepository));
 
 var app = builder.Build();
 
@@ -69,9 +70,9 @@ if (!dbContext.Roles.Any())
 {
     List<Role> defaultRoles =
     [
-        new Role() { RoleId = "adm", RoleName = "Admin", CreatedAt= DateTime.Now, ModifiedAt = DateTime.Now },
-        new Role() { RoleId = "mng", RoleName = "Manager", CreatedAt= DateTime.Now, ModifiedAt = DateTime.Now },
-        new Role() { RoleId = "ope", RoleName = "Operator", CreatedAt= DateTime.Now, ModifiedAt = DateTime.Now }
+        new Role() { RoleId = "adm", RoleName = "Admin", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new Role() { RoleId = "mng", RoleName = "Manager", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new Role() { RoleId = "ope", RoleName = "Operator", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now }
     ];
     dbContext.Roles.AddRange(defaultRoles);
     dbContext.SaveChanges();

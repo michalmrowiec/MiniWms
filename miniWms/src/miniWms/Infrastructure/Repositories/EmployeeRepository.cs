@@ -1,24 +1,25 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using miniWms.Application.Contracts;
+using miniWms.Application.Functions.Employees.Commands.CreateEmployee;
 using miniWms.Domain.Entities;
 using miniWms.Domain.Models;
 using miniWms.Infrastructure.Services;
 
 namespace miniWms.Infrastructure.Repositories
 {
-    public class EmployeesRepository : IEmployeeRepository
+    public class EmployeeRepository : IEmployeeRepository
     {
         private readonly MiniWmsDbContext _context;
         private readonly AuthenticationSettings _authenticationSettings;
         private readonly IPasswordHasher<Employee> _passwordHasher;
-        private readonly ILogger<EmployeesRepository> _logger;
+        private readonly ILogger<EmployeeRepository> _logger;
 
-        public EmployeesRepository(
+        public EmployeeRepository(
             MiniWmsDbContext context,
             AuthenticationSettings authenticationSettings,
             IPasswordHasher<Employee> passwordHasher,
-            ILogger<EmployeesRepository> logger)
+            ILogger<EmployeeRepository> logger)
         {
             _context = context;
             _authenticationSettings = authenticationSettings;
@@ -41,10 +42,11 @@ namespace miniWms.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<Employee> CreateEmployeeAsync(CraeteEmployeeModel employee)
+        public async Task<Employee> CreateEmployeeAsync(CreateEmployeeCommand employee)
         {
             var newEmployee = new Employee()
             {
+                EmployeeId = new Guid(),
                 RoleId = employee.RoleId,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
@@ -67,12 +69,8 @@ namespace miniWms.Infrastructure.Repositories
             await _context.Employees.AddAsync(newEmployee);
             await _context.SaveChangesAsync();
 
-            var addedEmployee = await GetEmployeeByEmailAddressAsync(newEmployee.EmailAddress);
-
-            if (addedEmployee.EmailAddress == null)
-            {
-                return new();
-            }
+            var addedEmployee = await _context.Employees
+                .SingleOrDefaultAsync(e => e.EmployeeId.Equals(newEmployee.EmployeeId)) ?? new();
 
             return addedEmployee;
         }

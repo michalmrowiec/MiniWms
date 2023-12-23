@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using miniWms.Api.Services;
+using miniWms.Application.Functions.Warehouses.Commands.CreateWarehouse;
 using miniWms.Application.Functions.Warehouses.Queries.GetAllWarehouses;
 using miniWms.Domain.Entities;
 
@@ -30,6 +31,21 @@ namespace miniWms.Api.Controllers
         public async Task<ActionResult<List<Warehouse>>> GetAllWarehouses()
         {
             return Ok(await _mediator.Send(new GetAllWarehousesQuery()));
+        }
+
+        [Authorize(Roles = "Admin,Manager")]
+        [HttpPost]
+        public async Task<ActionResult<Warehouse>> CreateWarehouse(CreateWarehouseCommand createWarehouseCommand)
+        {
+            if (_userContextService.GetUserId is not null)
+                createWarehouseCommand.CreatedBy = (Guid)_userContextService.GetUserId;
+
+            var result = await _mediator.Send(createWarehouseCommand);
+
+            if (result.Success)
+                return Ok(result.Warehouse);
+
+            return BadRequest(result.ValidationErrors);
         }
     }
 }

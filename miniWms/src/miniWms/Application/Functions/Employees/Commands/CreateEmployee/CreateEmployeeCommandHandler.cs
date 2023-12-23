@@ -25,25 +25,7 @@ namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
                 return new EmployeeResponse(validationResult);
             }
 
-            var newEmployee = new CraeteEmployeeModel()
-            {
-                RoleId = request.RoleId,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Password = request.Password,
-                HaveToChangePassword = request.HaveToChangePassword,
-                EmailAddress = request.EmailAddress,
-                PhoneNumber = request.PhoneNumber,
-                Country = request.Country,
-                City = request.City,
-                Region = request.Region,
-                PostalCode = request.PostalCode,
-                Address = request.Address,
-                IsActive = request.IsActive,
-                CreatedBy = request.CreatedBy,
-            };
-
-            var jwtToken = await _employeesRepository.CreateEmployeeAsync(newEmployee);
+            var jwtToken = await _employeesRepository.CreateEmployeeAsync(request);
 
             if (jwtToken.EmailAddress == null)
             {
