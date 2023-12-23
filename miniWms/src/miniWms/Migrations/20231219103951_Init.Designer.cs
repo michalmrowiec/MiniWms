@@ -12,7 +12,7 @@ using miniWms.Infrastructure;
 namespace miniWms.Migrations
 {
     [DbContext(typeof(MiniWmsDbContext))]
-    [Migration("20231219082136_Init")]
+    [Migration("20231219103951_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -285,6 +285,9 @@ namespace miniWms.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("HaveToChangePassword")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
