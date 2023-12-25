@@ -73,7 +73,7 @@ namespace miniWms.UnitTests.Application.Warehouses.Commands
             repo.Setup(m => m.CreateWarehouseAsync(It.IsAny<Warehouse>()))
                 .ReturnsAsync(warehouse);
 
-            CreateWarehouseCommandHandler handler = new CreateWarehouseCommandHandler(repo.Object);
+            CreateWarehouseCommandHandler handler = new(repo.Object);
 
             var response = await handler.Handle(warehouseCommand, new CancellationToken());
 
