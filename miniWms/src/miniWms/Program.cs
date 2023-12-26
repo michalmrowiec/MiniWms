@@ -55,6 +55,7 @@ builder.Services.AddDbContext<MiniWmsDbContext>(options =>
 
 builder.Services.AddScoped(typeof(IEmployeeRepository), typeof(EmployeeRepository));
 builder.Services.AddScoped(typeof(IWarehouseRepository), typeof(WarehouseRepository));
+builder.Services.AddScoped(typeof(IRoleRepository), typeof(RoleRepository));
 
 var app = builder.Build();
 

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using miniWms.Application.Contracts;
-using miniWms.Domain.Models;
+using miniWms.Application.Functions.Employees.Commands.CreateEmployee;
 
 namespace miniWms.Application.Functions.Employees.Commands.Login
 {
@@ -15,13 +15,15 @@ namespace miniWms.Application.Functions.Employees.Commands.Login
 
         public async Task<EmployeeResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var loginEmployee = new LoginEmployeeModel()
-            {
-                EmailAddress = request.EmailAddress,
-                Password = request.Password
-            };
+            LoginValidator validator = new();
+            var validationResult = validator.Validate(request);
 
-            var jwtToken = await _employeesRepository.LoginEmployeeAsync(loginEmployee);
+            if (!validationResult.IsValid)
+            {
+                return new EmployeeResponse(validationResult);
+            }
+
+            var jwtToken = await _employeesRepository.LoginEmployeeAsync(request);
 
             if (jwtToken.Token == null)
             {

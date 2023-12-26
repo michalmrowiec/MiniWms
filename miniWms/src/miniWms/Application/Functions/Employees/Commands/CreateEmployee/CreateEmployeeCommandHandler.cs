@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using miniWms.Application.Contracts;
-using miniWms.Domain.Models;
 
 namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
 {

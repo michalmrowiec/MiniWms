@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using miniWms.Application.Contracts;
 using miniWms.Application.Functions.Employees.Commands.CreateEmployee;
+using miniWms.Application.Functions.Employees.Commands.Login;
 using miniWms.Domain.Entities;
 using miniWms.Domain.Models;
 using miniWms.Infrastructure.Services;
@@ -81,19 +82,19 @@ namespace miniWms.Infrastructure.Repositories
             return employee ?? new();
         }
 
-        public async Task<JwtToken> LoginEmployeeAsync(LoginEmployeeModel loginEmployee)
+        public async Task<JwtToken> LoginEmployeeAsync(LoginCommand loginCommand)
         {
             var employee = await _context
                 .Employees
                 .Include(e => e.Role)
-                .FirstOrDefaultAsync(u => u.EmailAddress == loginEmployee.EmailAddress) ?? new();
+                .FirstOrDefaultAsync(u => u.EmailAddress == loginCommand.EmailAddress) ?? new();
 
             if (employee.EmailAddress == null)
             {
                 return new();
             }
 
-            var veryfication = _passwordHasher.VerifyHashedPassword(employee, employee.PasswordHash, loginEmployee.Password);
+            var veryfication = _passwordHasher.VerifyHashedPassword(employee, employee.PasswordHash, loginCommand.Password);
 
             if (veryfication == PasswordVerificationResult.Failed)
             {

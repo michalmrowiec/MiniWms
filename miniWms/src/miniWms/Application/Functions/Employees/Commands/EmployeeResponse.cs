@@ -6,7 +6,6 @@ namespace miniWms.Application.Functions.Employees.Commands
     public class EmployeeResponse : ResponseBase
     {
         public JwtToken? JwtToken { get; set; }
-        public bool? HaveToChangePassword { get; set; }
 
         public EmployeeResponse(JwtToken jwtToken) : base()
         {

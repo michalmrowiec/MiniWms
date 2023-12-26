@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using miniWms.Application.Functions.Employees.Queries.GetEmployeeByEmail;
-using System.Text.RegularExpressions;
+using miniWms.Application.Functions.Roles.Queries.GetAllRoles;
 
 namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
 {
@@ -16,7 +16,13 @@ namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
             RuleFor(e => e.RoleId)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("{PropertyName} is required"); // add custom validation
+                .WithMessage("{PropertyName} is required")
+                .Custom((value, context) =>
+                {
+                    var roles = _mediator.Send(new GetAllRolesQuery()).Result;
+                    if (!roles.Select(r => r.RoleId).Contains(value))
+                        context.AddFailure("RoleId", "Role doesn't exist");
+                });
 
             RuleFor(e => e.FirstName)
                 .NotNull()

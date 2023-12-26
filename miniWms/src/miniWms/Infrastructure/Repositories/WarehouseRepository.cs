@@ -35,9 +35,9 @@ namespace miniWms.Infrastructure.Repositories
 
         public async Task<IList<Warehouse>> GetAllWarehousesAsync()
         {
-            var addedWArehouse = await _context.Warehouses.ToListAsync() ?? [];
+            var warehouses = await _context.Warehouses.ToListAsync() ?? [];
 
-            return addedWArehouse;
+            return warehouses;
         }
 
         public Task<Warehouse> GetWarehouseByIdAsync(Guid id)
