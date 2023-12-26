@@ -25,9 +25,9 @@ namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
                 return new EmployeeResponse(validationResult);
             }
 
-            var jwtToken = await _employeesRepository.CreateEmployeeAsync(request);
+            var createdEmployee = await _employeesRepository.CreateEmployeeAsync(request);
 
-            if (jwtToken.EmailAddress == null)
+            if (createdEmployee.EmailAddress == null)
             {
                 return new EmployeeResponse(false, "Something went wrong.");
             }

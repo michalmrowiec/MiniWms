@@ -18,6 +18,7 @@ namespace miniWms.Application.Functions
         {
             Success = status;
             Message = message;
+            ValidationErrors = new();
         }
 
         public ResponseBase(ValidationResult validationResult)
