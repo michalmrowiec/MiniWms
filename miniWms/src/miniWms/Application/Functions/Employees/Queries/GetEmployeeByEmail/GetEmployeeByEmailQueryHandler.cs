@@ -6,8 +6,8 @@ namespace miniWms.Application.Functions.Employees.Queries.GetEmployeeByEmail
 {
     public class GetEmployeeByEmailQueryHandler : IRequestHandler<GetEmployeeByEmailQuery, Employee>
     {
-        private readonly IEmployeeRepository _employeesRepository;
-        public GetEmployeeByEmailQueryHandler(IEmployeeRepository userRepository)
+        private readonly IEmployeesRepository _employeesRepository;
+        public GetEmployeeByEmailQueryHandler(IEmployeesRepository userRepository)
         {
             _employeesRepository = userRepository;
         }

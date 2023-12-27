@@ -3,7 +3,7 @@ using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Contracts
 {
-    public interface IRoleRepository : IBaseRepository<Role, string>
+    public interface IProductsRepository : ICrudRepository<Product, Guid>
     {
 
     }

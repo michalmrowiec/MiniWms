@@ -9,18 +9,18 @@ using miniWms.Infrastructure.Services;
 
 namespace miniWms.Infrastructure.Repositories
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeesRepository : IEmployeesRepository
     {
         private readonly MiniWmsDbContext _context;
         private readonly AuthenticationSettings _authenticationSettings;
         private readonly IPasswordHasher<Employee> _passwordHasher;
-        private readonly ILogger<EmployeeRepository> _logger;
+        private readonly ILogger<EmployeesRepository> _logger;
 
-        public EmployeeRepository(
+        public EmployeesRepository(
             MiniWmsDbContext context,
             AuthenticationSettings authenticationSettings,
             IPasswordHasher<Employee> passwordHasher,
-            ILogger<EmployeeRepository> logger)
+            ILogger<EmployeesRepository> logger)
         {
             _context = context;
             _authenticationSettings = authenticationSettings;

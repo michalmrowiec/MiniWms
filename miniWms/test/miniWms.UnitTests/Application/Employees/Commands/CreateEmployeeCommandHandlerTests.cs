@@ -96,7 +96,7 @@ namespace miniWms.UnitTests.Application.Employees.Commands
             mediator.Setup(m => m.Send(new GetAllRolesQuery(), new CancellationToken()))
                 .ReturnsAsync(roles);
 
-            var repo = new Mock<IEmployeeRepository>();
+            var repo = new Mock<IEmployeesRepository>();
             repo.Setup(m => m.CreateEmployeeAsync(It.IsAny<CreateEmployeeCommand>()))
                 .ReturnsAsync(employee);
 
@@ -281,7 +281,7 @@ namespace miniWms.UnitTests.Application.Employees.Commands
             mediator.Setup(m => m.Send(new GetAllRolesQuery(), new CancellationToken()))
                 .ReturnsAsync(roles);
 
-            var repo = new Mock<IEmployeeRepository>();
+            var repo = new Mock<IEmployeesRepository>();
             repo.Setup(m => m.CreateEmployeeAsync(It.IsAny<CreateEmployeeCommand>()))
                 .ReturnsAsync(new Employee());
 

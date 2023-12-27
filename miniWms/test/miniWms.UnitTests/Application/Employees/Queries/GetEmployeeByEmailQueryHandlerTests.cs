@@ -38,7 +38,7 @@ namespace miniWms.UnitTests.Application.Employees.Queries
         [MemberData(nameof(ValidData))]
         public async Task GetEmployeeByEmailQueryHandler_ForValidData_ReturnsEmployee(Employee employee)
         {
-            var repo = new Mock<IEmployeeRepository>();
+            var repo = new Mock<IEmployeesRepository>();
             repo.Setup(m => m.GetEmployeeByEmailAddressAsync(employee.EmailAddress))
                 .ReturnsAsync(employee);
 
@@ -72,7 +72,7 @@ namespace miniWms.UnitTests.Application.Employees.Queries
         [MemberData(nameof(InvalidData))]
         public async Task GetEmployeeByEmailQueryHandler_ForInvalidData_ReturnsEmptyEmployee(string emailAddress, Employee employee)
         {
-            var repo = new Mock<IEmployeeRepository>();
+            var repo = new Mock<IEmployeesRepository>();
             repo.Setup(m => m.GetEmployeeByEmailAddressAsync(emailAddress))
                 .ReturnsAsync(employee);
 

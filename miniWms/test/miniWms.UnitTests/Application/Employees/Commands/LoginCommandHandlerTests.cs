@@ -29,7 +29,7 @@ namespace miniWms.UnitTests.Application.Employees.Commands
         public async Task LoginCommandHandler_ForValidData_ReturnsSuccedWithJwt(
             LoginCommand loginCommand, JwtToken jwtToken)
         {
-            var repo = new Mock<IEmployeeRepository>();
+            var repo = new Mock<IEmployeesRepository>();
             repo.Setup(m => m.LoginEmployeeAsync(loginCommand))
                 .ReturnsAsync(jwtToken);
 
@@ -88,7 +88,7 @@ namespace miniWms.UnitTests.Application.Employees.Commands
         public async Task LoginCommandHandler_ForInvalidData_ReturnsErrors(
             LoginCommand loginCommand, JwtToken jwtToken)
         {
-            var repo = new Mock<IEmployeeRepository>();
+            var repo = new Mock<IEmployeesRepository>();
             repo.Setup(m => m.LoginEmployeeAsync(loginCommand))
                 .ReturnsAsync(jwtToken);
 

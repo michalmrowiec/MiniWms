@@ -5,9 +5,9 @@ namespace miniWms.Application.Functions.Employees.Commands.ChangePassword
 {
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, EmployeeResponse>
     {
-        private readonly IEmployeeRepository _employeesRepository;
+        private readonly IEmployeesRepository _employeesRepository;
 
-        public ChangePasswordCommandHandler(IEmployeeRepository employeesRepository)
+        public ChangePasswordCommandHandler(IEmployeesRepository employeesRepository)
         {
             _employeesRepository = employeesRepository;
         }

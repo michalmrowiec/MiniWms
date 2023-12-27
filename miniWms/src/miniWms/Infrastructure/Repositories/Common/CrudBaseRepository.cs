@@ -3,12 +3,12 @@ using miniWms.Application.Contracts.Common;
 
 namespace miniWms.Infrastructure.Repositories.Common
 {
-    public class BaseRepository<TEntity, TId> : IBaseRepository<TEntity, TId> where TEntity : class, new()
+    public class CrudBaseRepository<TEntity, TId> : ICrudRepository<TEntity, TId> where TEntity : class, new()
     {
         private readonly MiniWmsDbContext _context;
-        private readonly ILogger<EmployeeRepository> _logger;
+        private readonly ILogger<EmployeesRepository> _logger;
 
-        public BaseRepository(MiniWmsDbContext context, ILogger<EmployeeRepository> logger)
+        public CrudBaseRepository(MiniWmsDbContext context, ILogger<EmployeesRepository> logger)
         {
             _context = context;
             _logger = logger;

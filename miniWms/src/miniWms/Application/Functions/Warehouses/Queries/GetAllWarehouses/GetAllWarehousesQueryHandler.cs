@@ -6,8 +6,8 @@ namespace miniWms.Application.Functions.Warehouses.Queries.GetAllWarehouses
 {
     public class GetAllWarehousesQueryHandler : IRequestHandler<GetAllWarehousesQuery, IList<Warehouse>>
     {
-        private readonly IWarehouseRepository _warehouseRepository;
-        public GetAllWarehousesQueryHandler(IWarehouseRepository warehouseRepository)
+        private readonly IWarehousesRepository _warehouseRepository;
+        public GetAllWarehousesQueryHandler(IWarehousesRepository warehouseRepository)
         {
             _warehouseRepository = warehouseRepository;
         }

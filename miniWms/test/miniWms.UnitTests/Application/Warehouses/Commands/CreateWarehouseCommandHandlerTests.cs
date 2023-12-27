@@ -69,7 +69,7 @@ namespace miniWms.UnitTests.Application.Warehouses.Commands
         [MemberData(nameof(ValidData))]
         public async Task CreateWarehouseCommandHandler_ForValidData_ReturnsSucced(CreateWarehouseCommand warehouseCommand, Warehouse warehouse)
         {
-            var repo = new Mock<IWarehouseRepository>();
+            var repo = new Mock<IWarehousesRepository>();
             repo.Setup(m => m.CreateAsync(It.IsAny<Warehouse>()))
                 .ReturnsAsync(warehouse);
 
@@ -156,7 +156,7 @@ namespace miniWms.UnitTests.Application.Warehouses.Commands
         [MemberData(nameof(InvalidData))]
         public async Task CreateWarehouseCommandHandler_ForInvalidData_ReturnsErrors(CreateWarehouseCommand warehouseCommand)
         {
-            var repo = new Mock<IWarehouseRepository>();
+            var repo = new Mock<IWarehousesRepository>();
             repo.Setup(m => m.CreateAsync(It.IsAny<Warehouse>()))
                 .ReturnsAsync(new Warehouse());
 

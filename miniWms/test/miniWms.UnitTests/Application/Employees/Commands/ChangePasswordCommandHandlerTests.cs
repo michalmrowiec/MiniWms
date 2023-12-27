@@ -22,7 +22,7 @@ namespace miniWms.UnitTests.Application.Employees.Commands
         [MemberData(nameof(ValidData))]
         public async Task ChangePasswordCommandHandler_ForValidData_ReturnsSucced(ChangePasswordCommand changePasswordCommand)
         {
-            var repo = new Mock<IEmployeeRepository>();
+            var repo = new Mock<IEmployeesRepository>();
             repo.Setup(m => m.ChangePassword(It.IsAny<Guid>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
 
@@ -74,7 +74,7 @@ namespace miniWms.UnitTests.Application.Employees.Commands
         [MemberData(nameof(InvalidData))]
         public async Task ChangePasswordCommandHandler_ForInvalidData_ReturnsErrors(ChangePasswordCommand changePasswordCommand)
         {
-            var repo = new Mock<IEmployeeRepository>();
+            var repo = new Mock<IEmployeesRepository>();
             repo.Setup(m => m.ChangePassword(It.IsAny<Guid>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
 

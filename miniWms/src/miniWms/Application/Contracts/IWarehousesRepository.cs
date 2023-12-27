@@ -3,7 +3,7 @@ using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Contracts
 {
-    public interface IWarehouseRepository : IBaseRepository<Warehouse, Guid>
+    public interface IWarehousesRepository : ICrudRepository<Warehouse, Guid>
     {
 
     }

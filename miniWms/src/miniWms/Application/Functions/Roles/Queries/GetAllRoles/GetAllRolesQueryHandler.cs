@@ -6,8 +6,8 @@ namespace miniWms.Application.Functions.Roles.Queries.GetAllRoles
 {
     public class GetAllRolesQueryHandler : IRequestHandler<GetAllRolesQuery, IList<Role>>
     {
-        private readonly IRoleRepository _roleRepository;
-        public GetAllRolesQueryHandler(IRoleRepository roleRepository)
+        private readonly IRolesRepository _roleRepository;
+        public GetAllRolesQueryHandler(IRolesRepository roleRepository)
         {
             _roleRepository = roleRepository;
         }
