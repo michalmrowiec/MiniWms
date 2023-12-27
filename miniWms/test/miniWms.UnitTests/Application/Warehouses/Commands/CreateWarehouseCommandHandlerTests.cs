@@ -70,7 +70,7 @@ namespace miniWms.UnitTests.Application.Warehouses.Commands
         public async Task CreateWarehouseCommandHandler_ForValidData_ReturnsSucced(CreateWarehouseCommand warehouseCommand, Warehouse warehouse)
         {
             var repo = new Mock<IWarehouseRepository>();
-            repo.Setup(m => m.CreateWarehouseAsync(It.IsAny<Warehouse>()))
+            repo.Setup(m => m.CreateAsync(It.IsAny<Warehouse>()))
                 .ReturnsAsync(warehouse);
 
             CreateWarehouseCommandHandler handler = new(repo.Object);
@@ -157,7 +157,7 @@ namespace miniWms.UnitTests.Application.Warehouses.Commands
         public async Task CreateWarehouseCommandHandler_ForInvalidData_ReturnsErrors(CreateWarehouseCommand warehouseCommand)
         {
             var repo = new Mock<IWarehouseRepository>();
-            repo.Setup(m => m.CreateWarehouseAsync(It.IsAny<Warehouse>()))
+            repo.Setup(m => m.CreateAsync(It.IsAny<Warehouse>()))
                 .ReturnsAsync(new Warehouse());
 
             CreateWarehouseCommandHandler handler = new CreateWarehouseCommandHandler(repo.Object);

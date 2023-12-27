@@ -74,7 +74,7 @@ namespace miniWms.UnitTests.Application.Warehouses.Queries
         public async Task GetAllWarehousesHandler_ForValidData_ReturnsSuccedWithListOfWarehouses(List<Warehouse> warehouses)
         {
             var repo = new Mock<IWarehouseRepository>();
-            repo.Setup(m => m.GetAllWarehousesAsync())
+            repo.Setup(m => m.GetAllAsync())
                 .ReturnsAsync(warehouses);
 
             GetAllWarehousesQueryHandler handler = new(repo.Object);

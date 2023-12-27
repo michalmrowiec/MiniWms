@@ -64,7 +64,7 @@ namespace miniWms.UnitTests.Application.Employees.Commands
                 {
                     EmployeeId = new Guid("00000000-0000-0000-0000-900000000000"),
                     NewPassword = "",
-                    RepeatPassword = "34fdg#$%T$TEsgdsfg"
+                    RepeatPassword = "34fdg#$%TEntity$TEsgdsfg"
 
                 }
             }

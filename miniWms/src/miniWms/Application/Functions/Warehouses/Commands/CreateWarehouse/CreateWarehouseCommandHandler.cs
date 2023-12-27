@@ -36,7 +36,7 @@ namespace miniWms.Application.Functions.Warehouses.Commands.CreateWarehouse
                 ModifiedBy = request.CreatedBy
             };
 
-            var createdWarehouse = await _warehouseRepository.CreateWarehouseAsync(newWarehouse);
+            var createdWarehouse = await _warehouseRepository.CreateAsync(newWarehouse);
 
             return new WarehouseResponse(createdWarehouse);
         }

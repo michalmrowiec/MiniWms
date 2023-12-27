@@ -68,7 +68,7 @@ namespace miniWms.UnitTests.Application.Roles
         public async Task GetAllRolesQueryHandler_ForValidData_ReturnsSuccedWithListOfRoles(List<Role> roles)
         {
             var repo = new Mock<IRoleRepository>();
-            repo.Setup(m => m.GetAllRolesAsync())
+            repo.Setup(m => m.GetAllAsync())
                 .ReturnsAsync(roles);
 
             GetAllRolesQueryHandler handler = new(repo.Object);

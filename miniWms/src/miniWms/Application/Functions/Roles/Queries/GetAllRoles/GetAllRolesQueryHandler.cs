@@ -14,7 +14,7 @@ namespace miniWms.Application.Functions.Roles.Queries.GetAllRoles
 
         public async Task<IList<Role>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
         {
-            return await _roleRepository.GetAllRolesAsync();
+            return await _roleRepository.GetAllAsync();
         }
     }
 }

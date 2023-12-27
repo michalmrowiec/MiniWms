@@ -1,14 +1,10 @@
-﻿using miniWms.Domain.Entities;
+﻿using miniWms.Application.Contracts.Common;
+using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Contracts
 {
-    public interface IWarehouseRepository
+    public interface IWarehouseRepository : IBaseRepository<Warehouse, Guid>
     {
-        Task<Warehouse> CreateWarehouseAsync(Warehouse warehouse);
-        Task<Warehouse> UpdateWarehouseAsync(Warehouse Warehouse);
-        Task<bool> DeleteWarehouseAsync(Guid id);
-        Task<Warehouse> GetWarehouseByIdAsync(Guid id); // with products?
-        Task<IList<Warehouse>> GetAllWarehousesAsync();
 
     }
 }

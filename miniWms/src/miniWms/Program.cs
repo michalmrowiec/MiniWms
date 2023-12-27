@@ -8,6 +8,7 @@ using miniWms.Components;
 using miniWms.Domain.Entities;
 using miniWms.Infrastructure;
 using miniWms.Infrastructure.Repositories;
+using System.Security.Cryptography;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

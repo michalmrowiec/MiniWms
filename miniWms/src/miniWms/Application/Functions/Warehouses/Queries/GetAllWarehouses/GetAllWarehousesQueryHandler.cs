@@ -14,7 +14,7 @@ namespace miniWms.Application.Functions.Warehouses.Queries.GetAllWarehouses
 
         public async Task<IList<Warehouse>> Handle(GetAllWarehousesQuery request, CancellationToken cancellationToken)
         {
-            return await _warehouseRepository.GetAllWarehousesAsync();
+            return await _warehouseRepository.GetAllAsync();
         }
     }
 }

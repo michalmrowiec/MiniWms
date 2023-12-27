@@ -1,9 +1,10 @@
-﻿using miniWms.Domain.Entities;
+﻿using miniWms.Application.Contracts.Common;
+using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Contracts
 {
-    public interface IRoleRepository
+    public interface IRoleRepository : IBaseRepository<Role, string>
     {
-        Task<IList<Role>> GetAllRolesAsync();
+
     }
 }
