@@ -2,7 +2,7 @@
 
 namespace miniWms.Application.Functions.Warehouses.Commands.CreateWarehouse
 {
-    public class CreateWarehouseCommand : IRequest<WarehouseResponse>
+    public record CreateWarehouseCommand : IRequest<WarehouseResponse>
     {
         public string WarehouseName { get; set; }
         public string Country { get; set; }

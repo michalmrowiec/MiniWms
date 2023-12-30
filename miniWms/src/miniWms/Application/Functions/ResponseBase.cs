@@ -38,4 +38,16 @@ namespace miniWms.Application.Functions
                 .ForEach(e => ValidationErrors.Add(e.ErrorMessage));
         }
     }
+
+    public class ResponseBase<T> : ResponseBase where T : class, new()
+    {
+        public T? ReturnedObj { get; set; }
+
+        public ResponseBase(T obj)
+        {
+            Success = true;
+            ValidationErrors = new();
+            ReturnedObj = obj;
+        }
+    }
 }
