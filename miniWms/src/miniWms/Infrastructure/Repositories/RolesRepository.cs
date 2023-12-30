@@ -8,9 +8,9 @@ namespace miniWms.Infrastructure.Repositories
     public class RolesRepository : CrudBaseRepository<Role, string>, IRolesRepository
     {
         private readonly MiniWmsDbContext _context;
-        private readonly ILogger<EmployeesRepository> _logger;
+        private readonly ILogger<Role> _logger;
 
-        public RolesRepository(MiniWmsDbContext context, ILogger<EmployeesRepository> logger) : base(context, logger)
+        public RolesRepository(MiniWmsDbContext context, ILogger<Role> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;

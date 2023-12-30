@@ -4,22 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 using miniWms.Api.Services;
 using miniWms.Application.Functions;
 using miniWms.Application.Functions.Categories.Commands.CreateCategory;
-using miniWms.Application.Functions.Categories.Queries.GetAllCategories;
+using miniWms.Application.Functions.Products.Commands.CreateProduct;
+using miniWms.Application.Functions.Products.Queries.GetSortedAndFilteredProducts;
 using miniWms.Domain.Entities;
+using miniWms.Domain.Models;
+using Sieve.Models;
 
 namespace miniWms.Api.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class CategoryController : ControllerBase
+    public class ProductController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<CategoryController> _logger;
+        private readonly ILogger<ProductController> _logger;
         private readonly IUserContextService _userContextService;
 
-        public CategoryController(
-            ILogger<CategoryController> logger,
+        public ProductController(
+            ILogger<ProductController> logger,
             IMediator mediator,
             IUserContextService userContextService)
         {
@@ -28,22 +31,22 @@ namespace miniWms.Api.Controllers
             _userContextService = userContextService;
         }
 
-        [HttpGet("all")]
-        public async Task<ActionResult<List<Category>>> GetAllCategories()
+        [HttpPost("get-filtered")]
+        public async Task<ActionResult<PagedResult<Product>>> GetSortedAndFilteredProducts([FromBody] SieveModel sieveModel)
         {
-            return Ok(await _mediator.Send(new GetAllCategoriesQuery()));
+            return Ok(await _mediator.Send(new GetSortedAndFilteredProductsQuery(sieveModel)));
         }
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpPost]
-        public async Task<ActionResult<Category>> CreateCategory([FromBody] CreateCategoryCommand createCategoryCommand)
+        public async Task<ActionResult<Product>> CreateProduct([FromBody] CreateProductCommand createProductCommand)
         {
             if (_userContextService.GetUserId is not null)
-                createCategoryCommand.CreatedBy = (Guid)_userContextService.GetUserId;
+                createProductCommand.CreatedBy = (Guid)_userContextService.GetUserId;
 
-            var result = await _mediator.Send(createCategoryCommand);
+            var result = await _mediator.Send(createProductCommand);
 
-            if (result is ResponseBase<Category> r)
+            if (result is ResponseBase<Product> r)
             {
                 return Created("", r.ReturnedObj);
             }

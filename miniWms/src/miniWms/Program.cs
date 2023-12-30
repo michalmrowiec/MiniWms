@@ -8,8 +8,9 @@ using miniWms.Components;
 using miniWms.Domain.Entities;
 using miniWms.Infrastructure;
 using miniWms.Infrastructure.Repositories;
-using System.Security.Cryptography;
+using Sieve.Services;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,11 +21,16 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<ISieveProcessor, MiniWmsSieveProcessor>();
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+}); ;
 
 var authenticationSettings = new AuthenticationSettings();
 builder.Configuration.GetSection("Authentication").Bind(authenticationSettings);
@@ -51,13 +57,14 @@ builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>(
 
 builder.Services.AddSingleton(authenticationSettings);
 
-builder.Services.AddDbContext<MiniWmsDbContext>(options =>
+builder.Services.AddDbContext<MiniWmsDbContext >(options =>
     options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MiniWmsDb;Trusted_Connection=True;"));
 
 builder.Services.AddScoped(typeof(IEmployeesRepository), typeof(EmployeesRepository));
 builder.Services.AddScoped(typeof(IWarehousesRepository), typeof(WarehousesRepository));
 builder.Services.AddScoped(typeof(IRolesRepository), typeof(RolesRepository));
 builder.Services.AddScoped(typeof(ICategoriesRepository), typeof(CategoryRepository));
+builder.Services.AddScoped(typeof(IProductsRepository), typeof(ProductRepository));
 
 var app = builder.Build();
 

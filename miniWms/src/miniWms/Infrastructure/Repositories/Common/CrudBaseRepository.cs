@@ -6,9 +6,9 @@ namespace miniWms.Infrastructure.Repositories.Common
     public class CrudBaseRepository<TEntity, TId> : ICrudRepository<TEntity, TId> where TEntity : class, new()
     {
         private readonly MiniWmsDbContext _context;
-        private readonly ILogger<EmployeesRepository> _logger;
+        private readonly ILogger<TEntity> _logger;
 
-        public CrudBaseRepository(MiniWmsDbContext context, ILogger<EmployeesRepository> logger)
+        public CrudBaseRepository(MiniWmsDbContext context, ILogger<TEntity> logger)
         {
             _context = context;
             _logger = logger;
