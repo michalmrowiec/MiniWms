@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using miniWms.Application.Contracts;
 using miniWms.Domain.Entities;
 using miniWms.Domain.Models;
@@ -9,15 +8,15 @@ using Sieve.Services;
 
 namespace miniWms.Infrastructure.Repositories
 {
-    public class ProductRepository : CrudBaseRepository<Product, Guid>, IProductsRepository
+    public class ProductRepository : CrudBaseRepository<Product, Guid, ProductRepository>, IProductsRepository
     {
         private readonly MiniWmsDbContext _context;
-        private readonly ILogger<Product> _logger;
+        private readonly ILogger<ProductRepository> _logger;
         private readonly ISieveProcessor _sieveProcessor;
 
         public ProductRepository(
             MiniWmsDbContext context,
-            ILogger<Product> logger,
+            ILogger<ProductRepository> logger,
             ISieveProcessor sieveProcessor) : base(context, logger)
         {
             _context = context;
@@ -29,6 +28,7 @@ namespace miniWms.Infrastructure.Repositories
         {
             var products = _context.Products
                 .Include(p => p.Category)
+                .AsNoTracking()
                 .AsQueryable();
 
             var filteredProducts = await _sieveProcessor
