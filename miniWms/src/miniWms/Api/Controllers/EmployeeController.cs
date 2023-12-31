@@ -37,7 +37,7 @@ namespace miniWms.Api.Controllers
             var result = await _mediator.Send(registerCommand);
 
             if (result.Success)
-                return Ok();
+                return Created();
 
             return BadRequest(result.ValidationErrors);
         }

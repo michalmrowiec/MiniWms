@@ -6,8 +6,8 @@ namespace miniWms.Application.Functions.Warehouses.Commands.CreateWarehouse
 {
     public class CreateWarehouseCommandHandler : IRequestHandler<CreateWarehouseCommand, WarehouseResponse>
     {
-        private readonly IWarehouseRepository _warehouseRepository;
-        public CreateWarehouseCommandHandler(IWarehouseRepository warehouseRepository)
+        private readonly IWarehousesRepository _warehouseRepository;
+        public CreateWarehouseCommandHandler(IWarehousesRepository warehouseRepository)
         {
             _warehouseRepository = warehouseRepository;
         }
@@ -36,7 +36,7 @@ namespace miniWms.Application.Functions.Warehouses.Commands.CreateWarehouse
                 ModifiedBy = request.CreatedBy
             };
 
-            var createdWarehouse = await _warehouseRepository.CreateWarehouseAsync(newWarehouse);
+            var createdWarehouse = await _warehouseRepository.CreateAsync(newWarehouse);
 
             return new WarehouseResponse(createdWarehouse);
         }

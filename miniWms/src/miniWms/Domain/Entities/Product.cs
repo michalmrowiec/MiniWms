@@ -18,6 +18,5 @@
         public Category? Category { get; set; }
         public IList<DocumentEntry> DocumentEntries { get; set; } = new List<DocumentEntry>();
         public IList<WarehouseEntry> WarehouseEntries { get; set; } = new List<WarehouseEntry>();
-
     }
 }

@@ -43,7 +43,7 @@ namespace miniWms.Api.Controllers
             var result = await _mediator.Send(createWarehouseCommand);
 
             if (result.Success)
-                return Ok(result.Warehouse);
+                return Created("", result.Warehouse);
 
             return BadRequest(result.ValidationErrors);
         }

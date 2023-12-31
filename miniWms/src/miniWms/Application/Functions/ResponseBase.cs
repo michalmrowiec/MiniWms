@@ -18,6 +18,7 @@ namespace miniWms.Application.Functions
         {
             Success = status;
             Message = message;
+            ValidationErrors = new();
         }
 
         public ResponseBase(ValidationResult validationResult)
@@ -35,6 +36,18 @@ namespace miniWms.Application.Functions
             ValidationErrors = new();
             validationResult.Errors
                 .ForEach(e => ValidationErrors.Add(e.ErrorMessage));
+        }
+    }
+
+    public class ResponseBase<T> : ResponseBase where T : class, new()
+    {
+        public T? ReturnedObj { get; set; }
+
+        public ResponseBase(T obj)
+        {
+            Success = true;
+            ValidationErrors = new();
+            ReturnedObj = obj;
         }
     }
 }

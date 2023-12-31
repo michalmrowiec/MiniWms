@@ -1,15 +1,14 @@
 ﻿using MediatR;
 using miniWms.Application.Contracts;
-using miniWms.Domain.Models;
 
 namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
 {
     public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, EmployeeResponse>
     {
-        private readonly IEmployeeRepository _employeesRepository;
+        private readonly IEmployeesRepository _employeesRepository;
         private readonly IMediator _mediator;
 
-        public CreateEmployeeCommandHandler(IEmployeeRepository employeesRepository, IMediator mediator)
+        public CreateEmployeeCommandHandler(IEmployeesRepository employeesRepository, IMediator mediator)
         {
             _employeesRepository = employeesRepository;
             _mediator = mediator;
@@ -25,9 +24,9 @@ namespace miniWms.Application.Functions.Employees.Commands.CreateEmployee
                 return new EmployeeResponse(validationResult);
             }
 
-            var jwtToken = await _employeesRepository.CreateEmployeeAsync(request);
+            var createdEmployee = await _employeesRepository.CreateEmployeeAsync(request);
 
-            if (jwtToken.EmailAddress == null)
+            if (createdEmployee.EmailAddress == null)
             {
                 return new EmployeeResponse(false, "Something went wrong.");
             }
