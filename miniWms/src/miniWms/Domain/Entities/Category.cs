@@ -1,8 +1,11 @@
-﻿namespace miniWms.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace miniWms.Domain.Entities
 {
     public class Category
     {
         public Guid CategoryId { get; set; }
+        [MaxLength(50)]
         public string CategoryName { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
