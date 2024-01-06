@@ -1,13 +1,21 @@
-﻿namespace miniWms.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace miniWms.Domain.Entities
 {
     public class Warehouse
     {
         public Guid WarehouseId { get; set; }
+        [MaxLength(250)]
         public string WarehouseName { get; set; }
+        [MaxLength(100)]
         public string Country { get; set; }
+        [MaxLength(100)]
         public string City { get; set; }
+        [MaxLength(100)]
         public string Region { get; set; }
+        [MaxLength(20)]
         public string PostalCode { get; set; }
+        [MaxLength(250)]
         public string Address { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }

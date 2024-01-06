@@ -1,19 +1,33 @@
-﻿namespace miniWms.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace miniWms.Domain.Entities
 {
     public class Employee
     {
         public Guid EmployeeId { get; set; }
+        [MinLength(3)]
+        [MaxLength(3)]
         public string RoleId { get; set; }
+        [MaxLength(50)]
         public string FirstName { get; set; }
+        [MaxLength(50)]
         public string LastName { get; set; }
+        [MaxLength(255)]
         public string PasswordHash { get; set; }
         public bool HaveToChangePassword { get; set; }
+        [MaxLength(20)]
         public string EmailAddress { get; set; }
+        [MaxLength(20)]
         public string PhoneNumber { get; set; }
+        [MaxLength(100)]
         public string Country { get; set; }
+        [MaxLength(100)]
         public string City { get; set; }
+        [MaxLength(100)]
         public string Region { get; set; }
+        [MaxLength(200)]
         public string PostalCode { get; set; }
+        [MaxLength(250)]
         public string Address { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
