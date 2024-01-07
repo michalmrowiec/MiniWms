@@ -4,7 +4,7 @@ using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Functions.Products.Commands.CreateProduct
 {
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ResponseBase>
+    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ResponseBase<Product>>
     {
         private readonly IProductsRepository _productsRepository;
         public CreateProductCommandHandler(IProductsRepository productsRepository)
@@ -12,7 +12,7 @@ namespace miniWms.Application.Functions.Products.Commands.CreateProduct
             _productsRepository = productsRepository;
         }
 
-        public async Task<ResponseBase> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase<Product>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             //TODO: add validator
 

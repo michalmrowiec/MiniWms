@@ -41,9 +41,9 @@ namespace miniWms.UnitTests.Infrastructure
         {
             await using var context = MiniWmsContextInMemoryFactory.Create();
 
-            var logger = new Mock<ILogger<CategoryRepository>>();
+            var logger = new Mock<ILogger<CategoriesRepository>>();
 
-            var categoryRepository = new CategoryRepository(context, logger.Object);
+            var categoryRepository = new CategoriesRepository(context, logger.Object);
 
             await categoryRepository.CreateAsync(category);
 

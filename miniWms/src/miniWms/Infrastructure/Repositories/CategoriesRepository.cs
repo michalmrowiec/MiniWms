@@ -4,12 +4,12 @@ using miniWms.Infrastructure.Repositories.Common;
 
 namespace miniWms.Infrastructure.Repositories
 {
-    public class CategoryRepository : CrudBaseRepository<Category, Guid, CategoryRepository>, ICategoriesRepository
+    public class CategoriesRepository : CrudBaseRepository<Category, Guid, CategoriesRepository>, ICategoriesRepository
     {
         private readonly MiniWmsDbContext _context;
-        private readonly ILogger<CategoryRepository> _logger;
+        private readonly ILogger<CategoriesRepository> _logger;
 
-        public CategoryRepository(MiniWmsDbContext context, ILogger<CategoryRepository> logger) : base(context, logger)
+        public CategoriesRepository(MiniWmsDbContext context, ILogger<CategoriesRepository> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;

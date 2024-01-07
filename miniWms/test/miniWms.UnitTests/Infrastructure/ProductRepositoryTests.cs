@@ -551,11 +551,11 @@ namespace miniWms.UnitTests.Infrastructure.Repositories
 
             await context.SaveChangesAsync();
 
-            var logger = new Mock<ILogger<ProductRepository>>();
+            var logger = new Mock<ILogger<ProductsRepository>>();
 
             IOptions<SieveOptions> optionsParameter = Options.Create(new SieveOptions());
 
-            ProductRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
+            ProductsRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
 
             var response = await productRepository.GetSortedAndFilteredProductsAsync(sieveModel);
 
@@ -894,11 +894,11 @@ namespace miniWms.UnitTests.Infrastructure.Repositories
 
             await context.SaveChangesAsync();
 
-            var logger = new Mock<ILogger<ProductRepository>>();
+            var logger = new Mock<ILogger<ProductsRepository>>();
 
             IOptions<SieveOptions> optionsParameter = Options.Create(new SieveOptions());
 
-            ProductRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
+            ProductsRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
 
             var response = await productRepository.GetSortedAndFilteredProductsAsync(sieveModel);
 
@@ -980,11 +980,11 @@ namespace miniWms.UnitTests.Infrastructure.Repositories
             await context.Set<Category>().AddAsync(category);
             await context.SaveChangesAsync();
 
-            var logger = new Mock<ILogger<ProductRepository>>();
+            var logger = new Mock<ILogger<ProductsRepository>>();
 
             IOptions<SieveOptions> optionsParameter = Options.Create(new SieveOptions());
 
-            ProductRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
+            ProductsRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
 
             var response = await productRepository.CreateAsync(product);
 
@@ -1057,11 +1057,11 @@ namespace miniWms.UnitTests.Infrastructure.Repositories
             await context.Set<Category>().AddAsync(category);
             await context.SaveChangesAsync();
 
-            var logger = new Mock<ILogger<ProductRepository>>();
+            var logger = new Mock<ILogger<ProductsRepository>>();
 
             IOptions<SieveOptions> optionsParameter = Options.Create(new SieveOptions());
 
-            ProductRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
+            ProductsRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
 
             var response = await productRepository.CreateAsync(product);
 
