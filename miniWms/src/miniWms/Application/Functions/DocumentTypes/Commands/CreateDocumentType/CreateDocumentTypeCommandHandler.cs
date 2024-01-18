@@ -7,15 +7,17 @@ namespace miniWms.Application.Functions.DocumentTypes.Commands.CreateDocumentTyp
     public class CreateDocumentTypeCommandHandler : IRequestHandler<CreateDocumentTypeCommand, ResponseBase<DocumentType>>
     {
         private readonly IDocumentTypesRepository _documentTypesRepository;
+        private readonly IMediator _mediator;
 
-        public CreateDocumentTypeCommandHandler(IDocumentTypesRepository documentTypesRepository)
+        public CreateDocumentTypeCommandHandler(IDocumentTypesRepository documentTypesRepository, IMediator mediator)
         {
             _documentTypesRepository = documentTypesRepository;
+            _mediator = mediator;
         }
 
         public async Task<ResponseBase<DocumentType>> Handle(CreateDocumentTypeCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateDocumentTypeValidator();
+            var validator = new CreateDocumentTypeValidator(_mediator);
             var validatorResult = await validator.ValidateAsync(request);
 
             if (!validatorResult.IsValid)
