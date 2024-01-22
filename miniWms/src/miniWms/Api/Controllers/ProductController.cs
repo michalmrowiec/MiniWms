@@ -46,9 +46,9 @@ namespace miniWms.Api.Controllers
 
             var result = await _mediator.Send(createProductCommand);
 
-            if (result is ResponseBase<Product> r)
+            if (result.Success)
             {
-                return Created("", r.ReturnedObj);
+                return Created("", result.ReturnedObj);
             }
 
             return BadRequest(result.ValidationErrors);

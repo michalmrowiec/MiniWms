@@ -49,5 +49,8 @@ namespace miniWms.Application.Functions
             ValidationErrors = new();
             ReturnedObj = obj;
         }
+
+        public ResponseBase(ValidationResult validationResult) : base(validationResult)
+        { }
     }
 }

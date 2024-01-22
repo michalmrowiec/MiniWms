@@ -44,12 +44,6 @@ namespace miniWms.Infrastructure
                 .HasForeignKey(d => d.RecipientId);
             });
 
-            modelBuilder.Entity<DocumentType>(eb =>
-            {
-                eb.Property(dt => dt.DocumentTypeId)
-                .HasMaxLength(3);
-            });
-
             modelBuilder.Entity<DocumentEntry>(eb =>
             {
                 eb.HasOne(de => de.Document)
@@ -164,12 +158,6 @@ namespace miniWms.Infrastructure
                 eb.HasMany(e => e.ModifiedWarehouseEntries)
                 .WithOne(we => we.ModifiedByEmployee)
                 .HasForeignKey(we => we.ModifiedBy);
-            });
-
-            modelBuilder.Entity<Role>(eb =>
-            {
-                eb.Property(r => r.RoleId)
-                .HasMaxLength(3);
             });
         }
     }
