@@ -66,6 +66,8 @@ builder.Services.AddScoped(typeof(IRolesRepository), typeof(RolesRepository));
 builder.Services.AddScoped(typeof(ICategoriesRepository), typeof(CategoriesRepository));
 builder.Services.AddScoped(typeof(IProductsRepository), typeof(ProductsRepository));
 builder.Services.AddScoped(typeof(IDocumentTypesRepository), typeof(DocumentTypesRepository));
+builder.Services.AddScoped(typeof(IDocumentEntriesRepository), typeof(DocumentEntriesRepository));
+builder.Services.AddScoped(typeof(IDocumentsRepository), typeof(DocumentsRepository));
 
 var app = builder.Build();
 
