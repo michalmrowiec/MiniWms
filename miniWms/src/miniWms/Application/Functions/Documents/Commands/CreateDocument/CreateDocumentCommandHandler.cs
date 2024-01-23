@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using miniWms.Application.Contracts;
+using miniWms.Application.Contracts.Utilities;
+using miniWms.Application.Functions.WarehouseEntries.Commands.UpdateStock;
 using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
@@ -8,16 +10,18 @@ namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
     {
         private readonly IDocumentsRepository _documentsRepository;
         private readonly IMediator _mediator;
-        public CreateDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator)
+        private readonly IUnitOfWork _unitOfWork;
+        public CreateDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, IUnitOfWork unitOfWork)
         {
             _documentsRepository = documentsRepository;
             _mediator = mediator;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ResponseBase<Document>> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
         {
             var validator = new CreateDocumentValidator(_mediator);
-            var validatorResult = await validator.ValidateAsync(request);
+            var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validatorResult.IsValid)
             {
@@ -55,7 +59,23 @@ namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
                 ModifiedBy = request.CreatedBy
             };
 
-            var createdDocument = await _documentsRepository.CreateAsync(newDocument);
+            Document createdDocument;
+
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
+
+                createdDocument = await _documentsRepository.CreateAsync(newDocument);
+
+                var res = await _mediator.Send(new UpdateStockCommand(newDocument), cancellationToken);
+
+                await _unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception e)
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                return new ResponseBase<Document>(false, "Something went wrong." + e.Message);
+            }
 
             return new ResponseBase<Document>(createdDocument);
         }

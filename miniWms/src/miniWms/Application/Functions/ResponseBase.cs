@@ -46,11 +46,12 @@ namespace miniWms.Application.Functions
         public ResponseBase(T obj)
         {
             Success = true;
-            ValidationErrors = new();
+            ValidationErrors = [];
             ReturnedObj = obj;
         }
 
-        public ResponseBase(ValidationResult validationResult) : base(validationResult)
-        { }
+        public ResponseBase(ValidationResult validationResult) : base(validationResult) { }
+
+        public ResponseBase(bool status, string message) : base(status, message) { }
     }
 }

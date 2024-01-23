@@ -48,7 +48,7 @@ namespace miniWms.Api.Controllers
                 return Created("", result.ReturnedObj);
             }
 
-            return BadRequest(result.ValidationErrors);
+            return BadRequest(result);
         }
     }
 }
