@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using miniWms.Application.Functions.DocumentEntries.Command;
 using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Functions.Documents.Commands.CreateDocument

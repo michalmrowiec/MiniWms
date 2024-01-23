@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using miniWms.Application.Contracts;
+﻿using miniWms.Application.Contracts;
 using miniWms.Domain.Entities;
 using miniWms.Infrastructure.Repositories.Common;
 
@@ -14,17 +13,6 @@ namespace miniWms.Infrastructure.Repositories
         {
             _context = context;
             _logger = logger;
-        }
-
-        public async Task<IList<DocumentEntry>> CreateRangeAsync(IList<DocumentEntry> entities)
-        {
-            await _context
-                .DocumentEntries
-                .AddRangeAsync(entities);
-
-            await _context.SaveChangesAsync();
-
-            return entities;
         }
     }
 }

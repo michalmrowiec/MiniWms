@@ -3,7 +3,7 @@ using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Contracts
 {
-    public interface IDocumentsRepository : ICrudRepository<Document, Guid>
+    public interface IDocumentsRepository : ICrudRepository<Document, Guid>, IGetSortedAndFiltered<Document>
     {
 
     }

@@ -24,7 +24,7 @@ namespace miniWms.Infrastructure.Repositories
             _sieveProcessor = sieveProcessor;
         }
 
-        public async Task<PagedResult<Product>> GetSortedAndFilteredProductsAsync(SieveModel sieveModel)
+        public async Task<PagedResult<Product>> GetSortedAndFilteredAsync(SieveModel sieveModel)
         {
             var products = _context.Products
                 .Include(p => p.Category)

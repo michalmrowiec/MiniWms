@@ -5,6 +5,6 @@ namespace miniWms.Application.Contracts
 {
     public interface IDocumentEntriesRepository : ICrudRepository<DocumentEntry, Guid>
     {
-        Task<IList<DocumentEntry>> CreateRangeAsync(IList<DocumentEntry> entities);
+
     }
 }
