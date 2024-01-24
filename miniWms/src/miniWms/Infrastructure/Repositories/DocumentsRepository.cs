@@ -21,6 +21,14 @@ namespace miniWms.Infrastructure.Repositories
             _sieveProcessor = sieveProcessor;
         }
 
+        public async Task<Document> GetByIdWithEntriesAsync(Guid id)
+        {
+            return await _context
+                .Documents
+                .Include(d => d.DocumentEntries)
+                .FirstAsync(d => d.DocumentId.Equals(id));
+        }
+
         public async Task<PagedResult<Document>> GetSortedAndFilteredAsync(SieveModel sieveModel)
         {
             var documents = _context.Documents

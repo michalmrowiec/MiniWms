@@ -100,6 +100,7 @@ if (!dbContext.DocumentTypes.Any())
     [
         new() { DocumentTypeId = "EXI", DocumentTypeName = "External Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
         new() { DocumentTypeId = "EXR", DocumentTypeName = "External Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INT", DocumentTypeName = "Internal Transfer", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
         new() { DocumentTypeId = "INI", DocumentTypeName = "Internal Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
         new() { DocumentTypeId = "INR", DocumentTypeName = "Internal Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now }
     ];

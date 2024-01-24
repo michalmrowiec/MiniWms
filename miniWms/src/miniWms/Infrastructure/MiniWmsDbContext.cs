@@ -6,7 +6,6 @@ namespace miniWms.Infrastructure
     public class MiniWmsDbContext : DbContext
     {
         public DbSet<Contractor> Contractors { get; set; }
-        public DbSet<Document> Documents { get; set; }
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<DocumentEntry> DocumentEntries { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
@@ -15,6 +14,9 @@ namespace miniWms.Infrastructure
         public DbSet<Category> Categories { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<ExternalDocument> ExternalDocuments { get; set; }
+        public DbSet<InternalDocument> InternalDocuments { get; set; }
 
         public MiniWmsDbContext(DbContextOptions<MiniWmsDbContext> dbContextOptions) : base(dbContextOptions)
         { }
@@ -27,23 +29,25 @@ namespace miniWms.Infrastructure
                 .WithMany(dt => dt.Documents)
                 .HasForeignKey(d => d.DocumentTypeId);
 
-                eb.HasOne(d => d.ContractorSupplier)
-                .WithMany(c => c.DocumentsAsSupplier)
-                .HasForeignKey(d => d.SupplierId);
-
-                eb.HasOne(d => d.ContractorRecipient)
-                .WithMany(c => c.DocumentsAsRecipient)
-                .HasForeignKey(d => d.RecipientId);
-
-                eb.HasOne(d => d.WarehouseSupplier)
-                .WithMany(w => w.DocumentsAsSupplier)
-                .HasForeignKey(d => d.SupplierId);
-
-                eb.HasOne(d => d.WarehouseRecipient)
-                .WithMany(w => w.DocumentsAsRecipient)
-                .HasForeignKey(d => d.RecipientId);
+                eb.HasOne(d => d.Warehouse)
+                .WithMany(w => w.Documents)
+                .HasForeignKey(d => d.WarehouseId);
             });
 
+            modelBuilder.Entity<ExternalDocument>(eb =>
+            {
+                eb.HasOne(ed => ed.Contractor)
+                .WithMany(c => c.ExternalDocuments)
+                .HasForeignKey(ed => ed.ContractorId);
+            });
+
+            modelBuilder.Entity<InternalDocument>(eb =>
+            {
+                eb.HasOne(id => id.TargetWarehouse)
+                .WithMany(w => w.DocumentsAsTargetWarehouse)
+                .HasForeignKey(id => id.TargetWarehouseId);
+            });
+            
             modelBuilder.Entity<DocumentEntry>(eb =>
             {
                 eb.HasOne(de => de.Document)

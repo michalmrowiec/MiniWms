@@ -557,7 +557,7 @@ namespace miniWms.UnitTests.Infrastructure.Repositories
 
             ProductsRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
 
-            var response = await productRepository.GetSortedAndFilteredProductsAsync(sieveModel);
+            var response = await productRepository.GetSortedAndFilteredAsync(sieveModel);
 
             foreach (var i in response.Items)
             {
@@ -900,7 +900,7 @@ namespace miniWms.UnitTests.Infrastructure.Repositories
 
             ProductsRepository productRepository = new(context, logger.Object, new MiniWmsSieveProcessor(optionsParameter));
 
-            var response = await productRepository.GetSortedAndFilteredProductsAsync(sieveModel);
+            var response = await productRepository.GetSortedAndFilteredAsync(sieveModel);
 
             foreach (var i in response.Items)
             {

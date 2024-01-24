@@ -1,13 +1,11 @@
-﻿using MediatR;
-using miniWms.Domain.Entities;
-
-namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
+﻿namespace miniWms.Application.Functions.Documents
 {
-    public class CreateDocumentCommand : IRequest<ResponseBase<Document>>
+    public class CreateDocumentCommand
     {
         public string DocumentTypeId { get; set; }
-        public Guid? SupplierId { get; set; }
-        public Guid? RecipientId { get; set; }
+        public Guid WarehouseId { get; set; }
+        public DateTime DateOfOperation { get; set; }
+        public string? Comments { get; set; }
         public string? Country { get; set; }
         public string? City { get; set; }
         public string? Region { get; set; }

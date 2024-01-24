@@ -1,10 +1,7 @@
-﻿using miniWms.Domain.Entities;
+﻿using MediatR;
+using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Functions.WarehouseEntries.Commands.SubtractFromStock
 {
-    public class SubtractFromStockCommand
-    {
-        public Guid WarehouseId { get; set; }
-        public List<DocumentEntry> DocumentEntries { get; set; }
-    }
+    public record SubtractFromStockCommand(Guid WarehouseId, List<DocumentEntry> DocumentEntries) : IRequest<ResponseBase<List<WarehouseEntry>>>;
 }

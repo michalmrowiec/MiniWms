@@ -2,14 +2,19 @@
 using MediatR;
 using miniWms.Application.Functions.DocumentTypes.Queries.GetAllDocumentTypes;
 
-namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
+namespace miniWms.Application.Functions.Documents
 {
-    public class CreateDocumentValidator : AbstractValidator<CreateDocumentCommand>
+    public abstract class CreateDocumentValidator<T> : AbstractValidator<T> where T : CreateDocumentCommand
     {
-        private readonly IMediator _mediator;
+        protected readonly IMediator _mediator;
         public CreateDocumentValidator(IMediator mediator)
         {
             _mediator = mediator;
+
+            RuleFor(ed => ed.WarehouseId)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("{PropertyName} is required");
 
             RuleFor(d => d.DocumentTypeId)
                 .NotNull()

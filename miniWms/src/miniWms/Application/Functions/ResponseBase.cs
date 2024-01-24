@@ -39,7 +39,7 @@ namespace miniWms.Application.Functions
         }
     }
 
-    public class ResponseBase<T> : ResponseBase where T : class, new()
+    public class ResponseBase<T> : ResponseBase where T : class
     {
         public T? ReturnedObj { get; set; }
 
