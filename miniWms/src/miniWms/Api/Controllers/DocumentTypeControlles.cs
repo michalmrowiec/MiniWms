@@ -35,7 +35,7 @@ namespace miniWms.Api.Controllers
 
         [Authorize(Roles = "Admin,Manager")]
         [HttpPost]
-        public async Task<ActionResult<DocumentType>> CreateCategory([FromBody] CreateDocumentTypeCommand createCategoryCommand)
+        public async Task<ActionResult<DocumentType>> CreateDocumentType([FromBody] CreateDocumentTypeCommand createCategoryCommand)
         {
             if (_userContextService.GetUserId is not null)
                 createCategoryCommand.CreatedBy = (Guid)_userContextService.GetUserId;

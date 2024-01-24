@@ -14,7 +14,7 @@ namespace miniWms.Application.Functions.Products.Queries.GetSortedAndFilteredPro
         }
         public async Task<PagedResult<Product>> Handle(GetSortedAndFilteredProductsQuery request, CancellationToken cancellationToken)
         {
-            return await _productsRepository.GetSortedAndFilteredProductsAsync(request.SieveModel);
+            return await _productsRepository.GetSortedAndFilteredAsync(request.SieveModel);
         }
     }
 }

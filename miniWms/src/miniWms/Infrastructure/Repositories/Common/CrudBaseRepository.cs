@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using miniWms.Application.Contracts.Common;
+using static Sieve.Extensions.MethodInfoExtended;
 
 namespace miniWms.Infrastructure.Repositories.Common
 {
     public class CrudBaseRepository<TEntity, TId, TLogger> : ICrudRepository<TEntity, TId>
-        where TEntity : class, new()
+        where TEntity : class
         where TLogger : class
     {
         private readonly MiniWmsDbContext _context;
@@ -48,7 +49,7 @@ namespace miniWms.Infrastructure.Repositories.Common
         {
             return await _context
                 .Set<TEntity>()
-                .FindAsync(id) ?? new();
+                .FindAsync(id);
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
