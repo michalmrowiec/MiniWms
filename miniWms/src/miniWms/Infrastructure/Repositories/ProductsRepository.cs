@@ -8,15 +8,15 @@ using Sieve.Services;
 
 namespace miniWms.Infrastructure.Repositories
 {
-    public class ProductRepository : CrudBaseRepository<Product, Guid, ProductRepository>, IProductsRepository
+    public class ProductsRepository : CrudBaseRepository<Product, Guid, ProductsRepository>, IProductsRepository
     {
         private readonly MiniWmsDbContext _context;
-        private readonly ILogger<ProductRepository> _logger;
+        private readonly ILogger<ProductsRepository> _logger;
         private readonly ISieveProcessor _sieveProcessor;
 
-        public ProductRepository(
+        public ProductsRepository(
             MiniWmsDbContext context,
-            ILogger<ProductRepository> logger,
+            ILogger<ProductsRepository> logger,
             ISieveProcessor sieveProcessor) : base(context, logger)
         {
             _context = context;
@@ -24,7 +24,7 @@ namespace miniWms.Infrastructure.Repositories
             _sieveProcessor = sieveProcessor;
         }
 
-        public async Task<PagedResult<Product>> GetSortedAndFilteredProductsAsync(SieveModel sieveModel)
+        public async Task<PagedResult<Product>> GetSortedAndFilteredAsync(SieveModel sieveModel)
         {
             var products = _context.Products
                 .Include(p => p.Category)

@@ -16,7 +16,7 @@ namespace miniWms.Migrations
                 columns: table => new
                 {
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -32,17 +32,17 @@ namespace miniWms.Migrations
                 columns: table => new
                 {
                     ContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ContractorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VatId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContractorName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    VatId = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     IsSupplier = table.Column<bool>(type: "bit", nullable: false),
                     IsRecipient = table.Column<bool>(type: "bit", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -76,32 +76,37 @@ namespace miniWms.Migrations
                 columns: table => new
                 {
                     DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DocumentTypeId = table.Column<string>(type: "nvarchar(3)", nullable: false),
-                    SupplierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    RecipientId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DocumentTypeId = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfOperation = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Region = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    ContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ContractorIsSupplier = table.Column<bool>(type: "bit", nullable: true),
+                    TargetWarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsComplited = table.Column<bool>(type: "bit", nullable: true),
+                    IsReceived = table.Column<bool>(type: "bit", nullable: true),
+                    IsStockTransfer = table.Column<bool>(type: "bit", nullable: true),
+                    DateOfOperationComplited = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Documents", x => x.DocumentId);
                     table.ForeignKey(
-                        name: "FK_Documents_Contractors_RecipientId",
-                        column: x => x.RecipientId,
+                        name: "FK_Documents_Contractors_ContractorId",
+                        column: x => x.ContractorId,
                         principalTable: "Contractors",
-                        principalColumn: "ContractorId");
-                    table.ForeignKey(
-                        name: "FK_Documents_Contractors_SupplierId",
-                        column: x => x.SupplierId,
-                        principalTable: "Contractors",
-                        principalColumn: "ContractorId");
+                        principalColumn: "ContractorId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -109,7 +114,7 @@ namespace miniWms.Migrations
                 columns: table => new
                 {
                     DocumentTypeId = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    DocumentTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DocumentTypeName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -125,18 +130,18 @@ namespace miniWms.Migrations
                 columns: table => new
                 {
                     EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(3)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     HaveToChangePassword = table.Column<bool>(type: "bit", nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -163,10 +168,10 @@ namespace miniWms.Migrations
                 columns: table => new
                 {
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     ProductDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Unit = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Unit = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     IsWeight = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -199,7 +204,7 @@ namespace miniWms.Migrations
                 columns: table => new
                 {
                     RoleId = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoleName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -225,12 +230,12 @@ namespace miniWms.Migrations
                 columns: table => new
                 {
                     WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    WarehouseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WarehouseName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -332,6 +337,11 @@ namespace miniWms.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Documents_ContractorId",
+                table: "Documents",
+                column: "ContractorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Documents_CreatedBy",
                 table: "Documents",
                 column: "CreatedBy");
@@ -347,14 +357,14 @@ namespace miniWms.Migrations
                 column: "ModifiedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_RecipientId",
+                name: "IX_Documents_TargetWarehouseId",
                 table: "Documents",
-                column: "RecipientId");
+                column: "TargetWarehouseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_SupplierId",
+                name: "IX_Documents_WarehouseId",
                 table: "Documents",
-                column: "SupplierId");
+                column: "WarehouseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DocumentTypes_CreatedBy",
@@ -517,18 +527,19 @@ namespace miniWms.Migrations
                 principalColumn: "EmployeeId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Documents_Warehouses_RecipientId",
+                name: "FK_Documents_Warehouses_TargetWarehouseId",
                 table: "Documents",
-                column: "RecipientId",
+                column: "TargetWarehouseId",
                 principalTable: "Warehouses",
                 principalColumn: "WarehouseId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Documents_Warehouses_SupplierId",
+                name: "FK_Documents_Warehouses_WarehouseId",
                 table: "Documents",
-                column: "SupplierId",
+                column: "WarehouseId",
                 principalTable: "Warehouses",
-                principalColumn: "WarehouseId");
+                principalColumn: "WarehouseId",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_DocumentTypes_Employees_CreatedBy",

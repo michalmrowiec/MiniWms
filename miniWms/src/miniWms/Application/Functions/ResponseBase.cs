@@ -39,15 +39,19 @@ namespace miniWms.Application.Functions
         }
     }
 
-    public class ResponseBase<T> : ResponseBase where T : class, new()
+    public class ResponseBase<T> : ResponseBase where T : class
     {
         public T? ReturnedObj { get; set; }
 
         public ResponseBase(T obj)
         {
             Success = true;
-            ValidationErrors = new();
+            ValidationErrors = [];
             ReturnedObj = obj;
         }
+
+        public ResponseBase(ValidationResult validationResult) : base(validationResult) { }
+
+        public ResponseBase(bool status, string message) : base(status, message) { }
     }
 }

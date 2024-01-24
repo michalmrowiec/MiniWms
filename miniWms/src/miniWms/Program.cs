@@ -3,18 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using miniWms.Api.Services;
 using miniWms.Application.Contracts;
+using miniWms.Application.Contracts.Utilities;
 using miniWms.Client.Pages;
 using miniWms.Components;
 using miniWms.Domain.Entities;
 using miniWms.Infrastructure;
 using miniWms.Infrastructure.Repositories;
+using miniWms.Infrastructure.Utilities;
 using Sieve.Services;
 using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
@@ -57,14 +58,20 @@ builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>(
 
 builder.Services.AddSingleton(authenticationSettings);
 
-builder.Services.AddDbContext<MiniWmsDbContext >(options =>
+builder.Services.AddDbContext<MiniWmsDbContext>(options =>
     options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MiniWmsDb;Trusted_Connection=True;"));
 
 builder.Services.AddScoped(typeof(IEmployeesRepository), typeof(EmployeesRepository));
 builder.Services.AddScoped(typeof(IWarehousesRepository), typeof(WarehousesRepository));
 builder.Services.AddScoped(typeof(IRolesRepository), typeof(RolesRepository));
-builder.Services.AddScoped(typeof(ICategoriesRepository), typeof(CategoryRepository));
-builder.Services.AddScoped(typeof(IProductsRepository), typeof(ProductRepository));
+builder.Services.AddScoped(typeof(ICategoriesRepository), typeof(CategoriesRepository));
+builder.Services.AddScoped(typeof(IProductsRepository), typeof(ProductsRepository));
+builder.Services.AddScoped(typeof(IDocumentTypesRepository), typeof(DocumentTypesRepository));
+builder.Services.AddScoped(typeof(IWarehouseEntriesRepository), typeof(WarehouseEntriesRepository));
+builder.Services.AddScoped(typeof(IDocumentEntriesRepository), typeof(DocumentEntriesRepository));
+builder.Services.AddScoped(typeof(IDocumentsRepository), typeof(DocumentsRepository));
+
+builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
 var app = builder.Build();
 
@@ -85,8 +92,22 @@ if (!dbContext.Roles.Any())
         new Role() { RoleId = "ope", RoleName = "Operator", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now }
     ];
     dbContext.Roles.AddRange(defaultRoles);
-    dbContext.SaveChanges();
 }
+
+if (!dbContext.DocumentTypes.Any())
+{
+    List<DocumentType> defaultDocumentTypes =
+    [
+        new() { DocumentTypeId = "EXI", DocumentTypeName = "External Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "EXR", DocumentTypeName = "External Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INT", DocumentTypeName = "Internal Transfer", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INI", DocumentTypeName = "Internal Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INR", DocumentTypeName = "Internal Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now }
+    ];
+    dbContext.DocumentTypes.AddRange(defaultDocumentTypes);
+}
+dbContext.SaveChanges();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

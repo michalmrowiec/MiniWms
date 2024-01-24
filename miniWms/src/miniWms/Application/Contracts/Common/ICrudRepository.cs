@@ -1,6 +1,6 @@
 ﻿namespace miniWms.Application.Contracts.Common
 {
-    public interface ICrudRepository<TEntity, TId> where TEntity : class, new()
+    public interface ICrudRepository<TEntity, TId> where TEntity : class
     {
         Task<TEntity> CreateAsync(TEntity entity);
         Task<TEntity> UpdateAsync(TEntity entity);
