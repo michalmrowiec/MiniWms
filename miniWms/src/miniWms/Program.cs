@@ -98,11 +98,11 @@ if (!dbContext.DocumentTypes.Any())
 {
     List<DocumentType> defaultDocumentTypes =
     [
-        new() { DocumentTypeId = "EXI", DocumentTypeName = "External Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
-        new() { DocumentTypeId = "EXR", DocumentTypeName = "External Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
-        new() { DocumentTypeId = "INT", DocumentTypeName = "Internal Transfer", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
-        new() { DocumentTypeId = "INI", DocumentTypeName = "Internal Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
-        new() { DocumentTypeId = "INR", DocumentTypeName = "Internal Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now }
+        new() { DocumentTypeId = "EXI", ActionType = ActionType.ExternalIssue, DocumentTypeName = "External Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "EXR", ActionType = ActionType.ExternalReceipt, DocumentTypeName = "External Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INT", ActionType = ActionType.InternalTransfer, DocumentTypeName = "Internal Transfer", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INI", ActionType = ActionType.InternalIssue, DocumentTypeName = "Internal Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INR", ActionType = ActionType.InternalReceipt, DocumentTypeName = "Internal Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now }
     ];
     dbContext.DocumentTypes.AddRange(defaultDocumentTypes);
 }
