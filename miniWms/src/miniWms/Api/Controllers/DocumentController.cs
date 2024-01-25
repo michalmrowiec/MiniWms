@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using miniWms.Api.Services;
-using miniWms.Application.Functions.Documents;
-using miniWms.Application.Functions.Documents.ExternalDocuments.Commands;
-using miniWms.Application.Functions.Documents.InternalDocuments.ApproveInternalDocument;
-using miniWms.Application.Functions.Documents.InternalDocuments.CreateInternalDocument;
+using miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument;
+using miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument;
 using miniWms.Application.Functions.Documents.Queries.GetSortedAndFilteredDocuments;
 using miniWms.Domain.Entities;
 using miniWms.Domain.Models;
@@ -38,13 +36,13 @@ namespace miniWms.Api.Controllers
             return Ok(await _mediator.Send(new GetSortedAndFilteredDocumentsQuery(sieveModel)));
         }
 
-        [HttpPost("external")]
-        public async Task<ActionResult<ExternalDocument>> CreateExternalDocument([FromBody] CreateExternalDocumentCommand createExternalDocument)
+        [HttpPost]
+        public async Task<ActionResult<Document>> CreateDocument([FromBody] CreateDocumentCommand createDocument)
         {
             if (_userContextService.GetUserId is not null)
-                createExternalDocument.CreatedBy = (Guid)_userContextService.GetUserId;
+                createDocument.CreatedBy = (Guid)_userContextService.GetUserId;
 
-            var result = await _mediator.Send(createExternalDocument);
+            var result = await _mediator.Send(createDocument);
 
             if (result.Success)
             {
@@ -54,24 +52,8 @@ namespace miniWms.Api.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("internal")]
-        public async Task<ActionResult<InternalDocument>> CreateInternalDocument([FromBody] CreateInternalDocumentCommand createInternalDocument)
-        {
-            if (_userContextService.GetUserId is not null)
-                createInternalDocument.CreatedBy = (Guid)_userContextService.GetUserId;
-
-            var result = await _mediator.Send(createInternalDocument);
-
-            if (result.Success)
-            {
-                return Created("", result.ReturnedObj);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpPut("internal")]
-        public async Task<ActionResult<InternalDocument>> ApproveInternalDocument([FromBody] ApproveInternalDocumentCommand approveInternalDocument)
+        [HttpPut("approve")]
+        public async Task<ActionResult<Document>> ApproveInternalDocument([FromBody] ApproveInternalDocumentCommand approveInternalDocument)
         {
             if (_userContextService.GetUserId is not null)
                 approveInternalDocument.ModifiedBy = (Guid)_userContextService.GetUserId;
@@ -80,9 +62,8 @@ namespace miniWms.Api.Controllers
 
             if (result.Success)
             {
-                return Created("", result.ReturnedObj);
+                return Ok(result.ReturnedObj);
             }
-
             return BadRequest(result);
         }
     }

@@ -29,6 +29,7 @@ namespace miniWms.Application.Functions.DocumentTypes.Commands.CreateDocumentTyp
             {
                 DocumentTypeId = request.DocumentTypeId,
                 DocumentTypeName = request.DocumentTypeName,
+                ActionType = request.ActionType,
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow,
                 CreatedBy = request.CreatedBy,

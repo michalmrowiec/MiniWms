@@ -32,6 +32,6 @@ namespace miniWms.Domain.Entities
 
         public Employee? CreatedByEmployee { get; set; }
         public Employee? ModifiedByEmployee { get; set; }
-        public IList<ExternalDocument> ExternalDocuments { get; set; } = new List<ExternalDocument>();
+        public IList<Document> Documents { get; set; } = new List<Document>();
     }
 }

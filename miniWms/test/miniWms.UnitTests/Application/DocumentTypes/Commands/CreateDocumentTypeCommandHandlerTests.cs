@@ -1,13 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
 using miniWms.Application.Contracts;
 using miniWms.Application.Functions;
 using miniWms.Application.Functions.DocumentTypes.Commands.CreateDocumentType;
 using miniWms.Application.Functions.DocumentTypes.Queries.GetAllDocumentTypes;
-using miniWms.Application.Functions.Employees.Queries.GetEmployeeByEmail;
-using miniWms.Application.Functions.Roles.Queries.GetAllRoles;
 using miniWms.Domain.Entities;
-using System.Reflection.Metadata;
 
 namespace miniWms.UnitTests.Application.DocumentTypes.Commands
 {
@@ -21,12 +17,14 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "PZP",
                     DocumentTypeName = "Test doc type 1",
+                    ActionType = ActionType.ExternalReceipt,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new DocumentType()
                 {
                     DocumentTypeId = "PZP",
                     DocumentTypeName = "Test doc type 1",
+                    ActionType = ActionType.ExternalReceipt,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000"),
                     ModifiedBy = new Guid("00000001-0000-0000-0000-122000000000"),
                     CreatedAt = new DateTime(2023, 10, 23),
@@ -38,12 +36,14 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 new CreateDocumentTypeCommand()
                 {
                     DocumentTypeId = "PZN",
+                    ActionType = ActionType.InternalTransfer,
                     DocumentTypeName = "Test doc type 2"
                 },
                 new DocumentType()
                 {
                     DocumentTypeId = "PZN",
                     DocumentTypeName = "Test doc type 2",
+                    ActionType = ActionType.InternalTransfer,
                     CreatedBy = null,
                     ModifiedBy = null,
                     CreatedAt = new DateTime(2023, 10, 12),
@@ -83,6 +83,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "",
                     DocumentTypeName = "",
+                    ActionType = ActionType.InternalIssue,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new List<DocumentType>()
@@ -93,6 +94,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "",
                     DocumentTypeName = "Test name of doc type 1",
+                    ActionType = ActionType.ExternalIssue,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new List<DocumentType>()
@@ -103,6 +105,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "PDA",
                     DocumentTypeName = "",
+                    ActionType = ActionType.InternalIssue,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new List<DocumentType>()
@@ -113,6 +116,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "PD",
                     DocumentTypeName = "Test doc",
+                    ActionType = ActionType.InternalReceipt,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new List<DocumentType>()
@@ -123,6 +127,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "P",
                     DocumentTypeName = "Test doc 231",
+                    ActionType = ActionType.InternalTransfer,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new List<DocumentType>()
@@ -133,6 +138,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "PPZD",
                     DocumentTypeName = "Test doc test 42",
+                    ActionType = ActionType.InternalIssue,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new List<DocumentType>()
@@ -143,6 +149,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "IPZ",
                     DocumentTypeName = "IPZ test",
+                    ActionType = ActionType.InternalTransfer,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new List<DocumentType>()
@@ -151,6 +158,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                     {
                         DocumentTypeId = "IPZ",
                         DocumentTypeName = "IPZ test test",
+                        ActionType = ActionType.InternalTransfer,
                         CreatedBy = null,
                         ModifiedBy = null,
                         CreatedAt = new DateTime(2023, 10, 12),
@@ -164,6 +172,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "IIP",
                     DocumentTypeName = "IPZ test",
+                    ActionType = ActionType.InternalIssue,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new List<DocumentType>()
@@ -172,6 +181,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                     {
                         DocumentTypeId = "IPZ",
                         DocumentTypeName = "IPZ test",
+                        ActionType = ActionType.ExternalIssue,
                         CreatedBy = null,
                         ModifiedBy = null,
                         CreatedAt = new DateTime(2023, 10, 12),
@@ -185,6 +195,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                 {
                     DocumentTypeId = "IPZ",
                     DocumentTypeName = "IPZ test",
+                    ActionType = ActionType.ExternalReceipt,
                     CreatedBy = new Guid("00000001-0000-0000-0000-122000000000")
                 },
                 new List<DocumentType>()
@@ -192,6 +203,7 @@ namespace miniWms.UnitTests.Application.DocumentTypes.Commands
                     new DocumentType
                     {
                         DocumentTypeId = "IPZ",
+                        ActionType = ActionType.InternalTransfer,
                         DocumentTypeName = "IPZ test",
                         CreatedBy = null,
                         ModifiedBy = null,

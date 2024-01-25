@@ -2,29 +2,35 @@
 using MediatR;
 using miniWms.Application.Functions.DocumentTypes.Queries.GetAllDocumentTypes;
 
-namespace miniWms.Application.Functions.Documents
+namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument
 {
-    public abstract class CreateDocumentValidator<T> : AbstractValidator<T> where T : CreateDocumentCommand
+    public class CreateDocumentValidator : AbstractValidator<CreateDocumentCommand>
     {
         protected readonly IMediator _mediator;
         public CreateDocumentValidator(IMediator mediator)
         {
             _mediator = mediator;
 
-            RuleFor(ed => ed.WarehouseId)
+            RuleFor(d => d.MainWarehouseId)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("{PropertyName} is required");
+                .WithMessage("{PropertyName} is required"); // validate warehouse exist
 
-            RuleFor(d => d.DocumentTypeId)
-                .NotNull()
-                .NotEmpty()
-                .WithMessage("{PropertyName} is required")
+            RuleFor(d => d.TargetWarehouseId); // validate warehouse exist
+
+            RuleFor(d => d.ContractorId); // validate warehouse exist
+
+            RuleFor(d => d)
                 .Custom((value, context) =>
                 {
-                    var roles = _mediator.Send(new GetAllDocumentTypesQuery()).Result;
-                    if (!roles.Select(r => r.DocumentTypeId).Contains(value))
+                    var documentTypes = _mediator.Send(new GetAllDocumentTypesQuery()).Result;
+
+                    if (!documentTypes.Select(r => r.DocumentTypeId).Contains(value.DocumentTypeId))
                         context.AddFailure("DocumentTypeId", "Document type doesn't exist");
+
+                    var documentType = documentTypes.FirstOrDefault(dt => dt.DocumentTypeId.Equals(value.DocumentTypeId));
+                    if (documentType != null && !documentType.ActionType.Equals(value.ActionType))
+                        context.AddFailure("ActionType", "Type of action doesn't exist");
                 });
 
             RuleFor(d => d.Country)

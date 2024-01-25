@@ -25,7 +25,7 @@ namespace miniWms.Domain.Entities
         public Employee? CreatedByEmployee { get; set; }
         public Employee? ModifiedByEmployee { get; set; }
         public IList<WarehouseEntry> WarehouseEntries { get; set; } = new List<WarehouseEntry>();
-        public IList<Document> Documents { get; set; } = new List<Document>();
-        public IList<InternalDocument> DocumentsAsTargetWarehouse { get; set; } = new List<InternalDocument>();
+        public IList<Document> DocumentsAsMainWarehouse { get; set; } = new List<Document>();
+        public IList<Document> DocumentsAsTargetWarehouse { get; set; } = new List<Document>();
     }
 }

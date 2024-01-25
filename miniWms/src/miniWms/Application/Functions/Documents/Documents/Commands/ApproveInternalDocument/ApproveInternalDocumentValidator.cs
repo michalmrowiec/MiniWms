@@ -3,7 +3,7 @@ using MediatR;
 using miniWms.Application.Functions.Documents.Queries.GetDocumentById;
 using miniWms.Domain.Entities;
 
-namespace miniWms.Application.Functions.Documents.InternalDocuments.ApproveInternalDocument
+namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument
 {
     public class ApproveInternalDocumentValidator : AbstractValidator<ApproveInternalDocumentCommand>
     {
@@ -23,11 +23,11 @@ namespace miniWms.Application.Functions.Documents.InternalDocuments.ApproveInter
                     if (!document.Success)
                         context.AddFailure("DocumentId", "Document doesn't exist");
 
-                    if (document.ReturnedObj is not InternalDocument internalDocument)
+                    if (document.ReturnedObj is not Document internalDocument)
                         context.AddFailure("DocumentId", "Document is not an Internal Document");
-                    else if(internalDocument.IsComplited)
+                    else if (internalDocument.IsComplited)
                         context.AddFailure("DocumentId", "Document is already completed");
-                });
+                }); // TODO fix
 
             RuleFor(ad => ad.DateOfOperationComplited)
                 .NotNull()

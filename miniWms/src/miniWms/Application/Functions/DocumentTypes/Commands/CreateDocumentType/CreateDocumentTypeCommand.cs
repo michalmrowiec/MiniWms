@@ -7,6 +7,7 @@ namespace miniWms.Application.Functions.DocumentTypes.Commands.CreateDocumentTyp
     {
         public string DocumentTypeId { get; set; }
         public string DocumentTypeName { get; set; }
+        public ActionType ActionType { get; set; }
         public Guid? CreatedBy { get; set; }
     }
 }
