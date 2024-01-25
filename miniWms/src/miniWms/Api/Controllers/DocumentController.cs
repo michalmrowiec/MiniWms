@@ -62,7 +62,7 @@ namespace miniWms.Api.Controllers
 
             if (result.Success)
             {
-                return Created("", result.ReturnedObj);
+                return Ok(result.ReturnedObj);
             }
             return BadRequest(result);
         }
