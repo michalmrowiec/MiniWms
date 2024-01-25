@@ -11,14 +11,14 @@ namespace miniWms.Api.Controllers
     [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class DocumentTypeControlles : ControllerBase
+    public class DocumentTypeController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILogger<DocumentTypeControlles> _logger;
+        private readonly ILogger<DocumentTypeController> _logger;
         private readonly IUserContextService _userContextService;
 
-        public DocumentTypeControlles(
-            ILogger<DocumentTypeControlles> logger,
+        public DocumentTypeController(
+            ILogger<DocumentTypeController> logger,
             IMediator mediator,
             IUserContextService userContextService)
         {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace miniWms.Application.Functions.Documents
+namespace miniWms.Application.Functions.Documents.Documents.Commands
 {
     public class CreateDocumentEntryValidator : AbstractValidator<CreateDocumentEntry>
     {

@@ -66,6 +66,7 @@ builder.Services.AddScoped(typeof(IWarehousesRepository), typeof(WarehousesRepos
 builder.Services.AddScoped(typeof(IRolesRepository), typeof(RolesRepository));
 builder.Services.AddScoped(typeof(ICategoriesRepository), typeof(CategoriesRepository));
 builder.Services.AddScoped(typeof(IProductsRepository), typeof(ProductsRepository));
+builder.Services.AddScoped(typeof(IContractorsRepository), typeof(ContractorsRepository));
 builder.Services.AddScoped(typeof(IDocumentTypesRepository), typeof(DocumentTypesRepository));
 builder.Services.AddScoped(typeof(IWarehouseEntriesRepository), typeof(WarehouseEntriesRepository));
 builder.Services.AddScoped(typeof(IDocumentEntriesRepository), typeof(DocumentEntriesRepository));
@@ -98,11 +99,11 @@ if (!dbContext.DocumentTypes.Any())
 {
     List<DocumentType> defaultDocumentTypes =
     [
-        new() { DocumentTypeId = "EXI", DocumentTypeName = "External Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
-        new() { DocumentTypeId = "EXR", DocumentTypeName = "External Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
-        new() { DocumentTypeId = "INT", DocumentTypeName = "Internal Transfer", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
-        new() { DocumentTypeId = "INI", DocumentTypeName = "Internal Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
-        new() { DocumentTypeId = "INR", DocumentTypeName = "Internal Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now }
+        new() { DocumentTypeId = "EXI", ActionType = ActionType.ExternalIssue, DocumentTypeName = "External Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "EXR", ActionType = ActionType.ExternalReceipt, DocumentTypeName = "External Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INT", ActionType = ActionType.InternalTransfer, DocumentTypeName = "Internal Transfer", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INI", ActionType = ActionType.InternalIssue, DocumentTypeName = "Internal Issue", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now },
+        new() { DocumentTypeId = "INR", ActionType = ActionType.InternalReceipt, DocumentTypeName = "Internal Receipt", CreatedAt = DateTime.Now, ModifiedAt = DateTime.Now }
     ];
     dbContext.DocumentTypes.AddRange(defaultDocumentTypes);
 }

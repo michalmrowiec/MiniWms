@@ -5,9 +5,9 @@ using miniWms.Application.Functions.Documents.Queries.GetDocumentById;
 using miniWms.Application.Functions.WarehouseEntries.Commands.AddToStock;
 using miniWms.Domain.Entities;
 
-namespace miniWms.Application.Functions.Documents.InternalDocuments.ApproveInternalDocument
+namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument
 {
-    public class ApproveInternalDocumentCommandHandler : IRequestHandler<ApproveInternalDocumentCommand, ResponseBase<InternalDocument>>
+    public class ApproveInternalDocumentCommandHandler : IRequestHandler<ApproveInternalDocumentCommand, ResponseBase<Document>>
     {
         private readonly IDocumentsRepository _documentsRepository;
         private readonly IMediator _mediator;
@@ -19,22 +19,22 @@ namespace miniWms.Application.Functions.Documents.InternalDocuments.ApproveInter
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseBase<InternalDocument>> Handle(ApproveInternalDocumentCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase<Document>> Handle(ApproveInternalDocumentCommand request, CancellationToken cancellationToken)
         {
             var validator = new ApproveInternalDocumentValidator(_mediator);
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validatorResult.IsValid)
             {
-                return new ResponseBase<InternalDocument>(validatorResult);
+                return new ResponseBase<Document>(validatorResult);
             }
 
             var documentResponse = await _mediator.Send(new GetDocumentByIdQuery(request.DocumentId), cancellationToken);
 
 
-            if (documentResponse.ReturnedObj is not InternalDocument internalDocument)
+            if (documentResponse.ReturnedObj is not Document internalDocument)
             {
-                return new ResponseBase<InternalDocument>(false, "Something went wrong.");
+                return new ResponseBase<Document>(false, "Something went wrong.");
             }
 
             internalDocument.IsComplited = true;
@@ -60,10 +60,10 @@ namespace miniWms.Application.Functions.Documents.InternalDocuments.ApproveInter
             catch (Exception e)
             {
                 await _unitOfWork.RollbackTransactionAsync();
-                return new ResponseBase<InternalDocument>(false, "Something went wrong." + e.Message);
+                return new ResponseBase<Document>(false, "Something went wrong." + e.Message);
             }
 
-            return new ResponseBase<InternalDocument>((InternalDocument)updatedInternalDocument);
+            return new ResponseBase<Document>((Document)updatedInternalDocument);
         }
     }
 }

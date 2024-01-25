@@ -77,9 +77,14 @@ namespace miniWms.Migrations
                 {
                     DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DocumentTypeId = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    WarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ActionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MainWarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    TargetWarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsComplited = table.Column<bool>(type: "bit", nullable: false),
                     DateOfOperation = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOfOperationComplited = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Region = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -88,15 +93,7 @@ namespace miniWms.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
-                    ContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ContractorIsSupplier = table.Column<bool>(type: "bit", nullable: true),
-                    TargetWarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsComplited = table.Column<bool>(type: "bit", nullable: true),
-                    IsReceived = table.Column<bool>(type: "bit", nullable: true),
-                    IsStockTransfer = table.Column<bool>(type: "bit", nullable: true),
-                    DateOfOperationComplited = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,8 +102,7 @@ namespace miniWms.Migrations
                         name: "FK_Documents_Contractors_ContractorId",
                         column: x => x.ContractorId,
                         principalTable: "Contractors",
-                        principalColumn: "ContractorId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ContractorId");
                 });
 
             migrationBuilder.CreateTable(
@@ -115,6 +111,7 @@ namespace miniWms.Migrations
                 {
                     DocumentTypeId = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     DocumentTypeName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ActionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -352,6 +349,11 @@ namespace miniWms.Migrations
                 column: "DocumentTypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Documents_MainWarehouseId",
+                table: "Documents",
+                column: "MainWarehouseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Documents_ModifiedBy",
                 table: "Documents",
                 column: "ModifiedBy");
@@ -360,11 +362,6 @@ namespace miniWms.Migrations
                 name: "IX_Documents_TargetWarehouseId",
                 table: "Documents",
                 column: "TargetWarehouseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Documents_WarehouseId",
-                table: "Documents",
-                column: "WarehouseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DocumentTypes_CreatedBy",
@@ -527,19 +524,19 @@ namespace miniWms.Migrations
                 principalColumn: "EmployeeId");
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Documents_Warehouses_MainWarehouseId",
+                table: "Documents",
+                column: "MainWarehouseId",
+                principalTable: "Warehouses",
+                principalColumn: "WarehouseId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Documents_Warehouses_TargetWarehouseId",
                 table: "Documents",
                 column: "TargetWarehouseId",
                 principalTable: "Warehouses",
                 principalColumn: "WarehouseId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Documents_Warehouses_WarehouseId",
-                table: "Documents",
-                column: "WarehouseId",
-                principalTable: "Warehouses",
-                principalColumn: "WarehouseId",
-                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_DocumentTypes_Employees_CreatedBy",

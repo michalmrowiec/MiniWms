@@ -12,7 +12,7 @@ using miniWms.Infrastructure;
 namespace miniWms.Migrations
 {
     [DbContext(typeof(MiniWmsDbContext))]
-    [Migration("20240124121336_Init")]
+    [Migration("20240125090639_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -141,6 +141,10 @@ namespace miniWms.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Address")
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
@@ -151,6 +155,9 @@ namespace miniWms.Migrations
 
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ContractorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Country")
                         .HasMaxLength(100)
@@ -165,15 +172,19 @@ namespace miniWms.Migrations
                     b.Property<DateTime>("DateOfOperation")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                    b.Property<DateTime?>("DateOfOperationComplited")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DocumentTypeId")
                         .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
+
+                    b.Property<bool>("IsComplited")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("MainWarehouseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
@@ -189,24 +200,24 @@ namespace miniWms.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("WarehouseId")
+                    b.Property<Guid?>("TargetWarehouseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("DocumentId");
+
+                    b.HasIndex("ContractorId");
 
                     b.HasIndex("CreatedBy");
 
                     b.HasIndex("DocumentTypeId");
 
+                    b.HasIndex("MainWarehouseId");
+
                     b.HasIndex("ModifiedBy");
 
-                    b.HasIndex("WarehouseId");
+                    b.HasIndex("TargetWarehouseId");
 
                     b.ToTable("Documents");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Document");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("miniWms.Domain.Entities.DocumentEntry", b =>
@@ -254,6 +265,10 @@ namespace miniWms.Migrations
                     b.Property<string>("DocumentTypeId")
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("ActionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -548,45 +563,6 @@ namespace miniWms.Migrations
                     b.ToTable("WarehouseEntries");
                 });
 
-            modelBuilder.Entity("miniWms.Domain.Entities.ExternalDocument", b =>
-                {
-                    b.HasBaseType("miniWms.Domain.Entities.Document");
-
-                    b.Property<Guid>("ContractorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("ContractorIsSupplier")
-                        .HasColumnType("bit");
-
-                    b.HasIndex("ContractorId");
-
-                    b.HasDiscriminator().HasValue("ExternalDocument");
-                });
-
-            modelBuilder.Entity("miniWms.Domain.Entities.InternalDocument", b =>
-                {
-                    b.HasBaseType("miniWms.Domain.Entities.Document");
-
-                    b.Property<DateTime?>("DateOfOperationComplited")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsComplited")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsReceived")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsStockTransfer")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("TargetWarehouseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("TargetWarehouseId");
-
-                    b.HasDiscriminator().HasValue("InternalDocument");
-                });
-
             modelBuilder.Entity("miniWms.Domain.Entities.Category", b =>
                 {
                     b.HasOne("miniWms.Domain.Entities.Employee", "CreatedByEmployee")
@@ -619,6 +595,10 @@ namespace miniWms.Migrations
 
             modelBuilder.Entity("miniWms.Domain.Entities.Document", b =>
                 {
+                    b.HasOne("miniWms.Domain.Entities.Contractor", "Contractor")
+                        .WithMany("Documents")
+                        .HasForeignKey("ContractorId");
+
                     b.HasOne("miniWms.Domain.Entities.Employee", "CreatedByEmployee")
                         .WithMany("CreatedDocuments")
                         .HasForeignKey("CreatedBy");
@@ -629,23 +609,31 @@ namespace miniWms.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("miniWms.Domain.Entities.Warehouse", "MainWarehouse")
+                        .WithMany("DocumentsAsMainWarehouse")
+                        .HasForeignKey("MainWarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("miniWms.Domain.Entities.Employee", "ModifiedByEmployee")
                         .WithMany("ModifiedDocuments")
                         .HasForeignKey("ModifiedBy");
 
-                    b.HasOne("miniWms.Domain.Entities.Warehouse", "Warehouse")
-                        .WithMany("Documents")
-                        .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("miniWms.Domain.Entities.Warehouse", "TargetWarehouse")
+                        .WithMany("DocumentsAsTargetWarehouse")
+                        .HasForeignKey("TargetWarehouseId");
+
+                    b.Navigation("Contractor");
 
                     b.Navigation("CreatedByEmployee");
 
                     b.Navigation("DocumentType");
 
+                    b.Navigation("MainWarehouse");
+
                     b.Navigation("ModifiedByEmployee");
 
-                    b.Navigation("Warehouse");
+                    b.Navigation("TargetWarehouse");
                 });
 
             modelBuilder.Entity("miniWms.Domain.Entities.DocumentEntry", b =>
@@ -801,26 +789,6 @@ namespace miniWms.Migrations
                     b.Navigation("Warehouse");
                 });
 
-            modelBuilder.Entity("miniWms.Domain.Entities.ExternalDocument", b =>
-                {
-                    b.HasOne("miniWms.Domain.Entities.Contractor", "Contractor")
-                        .WithMany("ExternalDocuments")
-                        .HasForeignKey("ContractorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Contractor");
-                });
-
-            modelBuilder.Entity("miniWms.Domain.Entities.InternalDocument", b =>
-                {
-                    b.HasOne("miniWms.Domain.Entities.Warehouse", "TargetWarehouse")
-                        .WithMany("DocumentsAsTargetWarehouse")
-                        .HasForeignKey("TargetWarehouseId");
-
-                    b.Navigation("TargetWarehouse");
-                });
-
             modelBuilder.Entity("miniWms.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -828,7 +796,7 @@ namespace miniWms.Migrations
 
             modelBuilder.Entity("miniWms.Domain.Entities.Contractor", b =>
                 {
-                    b.Navigation("ExternalDocuments");
+                    b.Navigation("Documents");
                 });
 
             modelBuilder.Entity("miniWms.Domain.Entities.Document", b =>
@@ -898,7 +866,7 @@ namespace miniWms.Migrations
 
             modelBuilder.Entity("miniWms.Domain.Entities.Warehouse", b =>
                 {
-                    b.Navigation("Documents");
+                    b.Navigation("DocumentsAsMainWarehouse");
 
                     b.Navigation("DocumentsAsTargetWarehouse");
 

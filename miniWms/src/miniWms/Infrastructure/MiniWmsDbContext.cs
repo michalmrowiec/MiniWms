@@ -15,8 +15,6 @@ namespace miniWms.Infrastructure
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Document> Documents { get; set; }
-        public DbSet<ExternalDocument> ExternalDocuments { get; set; }
-        public DbSet<InternalDocument> InternalDocuments { get; set; }
 
         public MiniWmsDbContext(DbContextOptions<MiniWmsDbContext> dbContextOptions) : base(dbContextOptions)
         { }
@@ -29,25 +27,28 @@ namespace miniWms.Infrastructure
                 .WithMany(dt => dt.Documents)
                 .HasForeignKey(d => d.DocumentTypeId);
 
-                eb.HasOne(d => d.Warehouse)
-                .WithMany(w => w.Documents)
-                .HasForeignKey(d => d.WarehouseId);
-            });
+                eb.Property(d => d.ActionType)
+                .HasConversion<string>();
 
-            modelBuilder.Entity<ExternalDocument>(eb =>
-            {
-                eb.HasOne(ed => ed.Contractor)
-                .WithMany(c => c.ExternalDocuments)
-                .HasForeignKey(ed => ed.ContractorId);
-            });
+                eb.HasOne(d => d.MainWarehouse)
+                .WithMany(w => w.DocumentsAsMainWarehouse)
+                .HasForeignKey(d => d.MainWarehouseId);
 
-            modelBuilder.Entity<InternalDocument>(eb =>
-            {
-                eb.HasOne(id => id.TargetWarehouse)
+                eb.HasOne(d => d.Contractor)
+                .WithMany(c => c.Documents)
+                .HasForeignKey(d => d.ContractorId);
+
+                eb.HasOne(d => d.TargetWarehouse)
                 .WithMany(w => w.DocumentsAsTargetWarehouse)
-                .HasForeignKey(id => id.TargetWarehouseId);
+                .HasForeignKey(d => d.TargetWarehouseId);
             });
-            
+
+            modelBuilder.Entity<DocumentType>(eb =>
+            {
+                eb.Property(dt => dt.ActionType)
+                .HasConversion<string>();
+            });
+
             modelBuilder.Entity<DocumentEntry>(eb =>
             {
                 eb.HasOne(de => de.Document)
