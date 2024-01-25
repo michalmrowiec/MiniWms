@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using miniWms.Api.Services;
+using miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument;
 using miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument;
 using miniWms.Application.Functions.Documents.Queries.GetSortedAndFilteredDocuments;
 using miniWms.Domain.Entities;
@@ -48,6 +49,21 @@ namespace miniWms.Api.Controllers
                 return Created("", result.ReturnedObj);
             }
 
+            return BadRequest(result);
+        }
+
+        [HttpPut("approve")]
+        public async Task<ActionResult<Document>> ApproveInternalDocument([FromBody] ApproveInternalDocumentCommand approveInternalDocument)
+        {
+            if (_userContextService.GetUserId is not null)
+                approveInternalDocument.ModifiedBy = (Guid)_userContextService.GetUserId;
+
+            var result = await _mediator.Send(approveInternalDocument);
+
+            if (result.Success)
+            {
+                return Created("", result.ReturnedObj);
+            }
             return BadRequest(result);
         }
     }

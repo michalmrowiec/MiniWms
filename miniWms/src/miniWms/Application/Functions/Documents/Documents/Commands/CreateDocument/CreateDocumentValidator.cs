@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
 using miniWms.Application.Functions.DocumentTypes.Queries.GetAllDocumentTypes;
-using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument
 {

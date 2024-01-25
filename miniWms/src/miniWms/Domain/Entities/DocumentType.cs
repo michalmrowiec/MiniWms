@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace miniWms.Domain.Entities
 {
@@ -20,6 +21,7 @@ namespace miniWms.Domain.Entities
         public IList<Document>? Documents { get; set; }
     }
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum ActionType
     {
         InternalTransfer,

@@ -66,6 +66,7 @@ builder.Services.AddScoped(typeof(IWarehousesRepository), typeof(WarehousesRepos
 builder.Services.AddScoped(typeof(IRolesRepository), typeof(RolesRepository));
 builder.Services.AddScoped(typeof(ICategoriesRepository), typeof(CategoriesRepository));
 builder.Services.AddScoped(typeof(IProductsRepository), typeof(ProductsRepository));
+builder.Services.AddScoped(typeof(IContractorsRepository), typeof(ContractorsRepository));
 builder.Services.AddScoped(typeof(IDocumentTypesRepository), typeof(DocumentTypesRepository));
 builder.Services.AddScoped(typeof(IWarehouseEntriesRepository), typeof(WarehouseEntriesRepository));
 builder.Services.AddScoped(typeof(IDocumentEntriesRepository), typeof(DocumentEntriesRepository));
