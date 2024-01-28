@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
+using miniWms.Application.Functions.Contractors.Queries.GetContractorById;
 using miniWms.Application.Functions.DocumentTypes.Queries.GetAllDocumentTypes;
+using miniWms.Application.Functions.Warehouses.Queries.GetWarehouseById;
 
 namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument
 {
@@ -14,11 +16,39 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocum
             RuleFor(d => d.MainWarehouseId)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("{PropertyName} is required"); // validate warehouse exist
+                .WithMessage("{PropertyName} is required")
+                .Custom((value, context) =>
+                {
+                    var warehouse = _mediator.Send(new GetWarehouseByIdQuery((Guid)value)).Result;
+                    if (!warehouse.Success)
+                        context.AddFailure("MainWarehouseId", "Main warehouse doesn't exist");
+                });
 
-            RuleFor(d => d.TargetWarehouseId); // validate warehouse exist
+            RuleFor(d => d.TargetWarehouseId)
+                .Null().When(d => d.ContractorId.HasValue)
+                .WithMessage("Cannot specify the contractor and the target warehouse at the same time.")
+                .Custom((value, context) =>
+                {
+                    if (value.HasValue)
+                    {
+                        var warehouse = _mediator.Send(new GetWarehouseByIdQuery((Guid)value)).Result;
+                        if (!warehouse.Success)
+                            context.AddFailure("TargetWarehouseId", "Target warehouse doesn't exist");
+                    }
+                });
 
-            RuleFor(d => d.ContractorId); // validate warehouse exist
+            RuleFor(d => d.ContractorId)
+                .Null().When(d => d.TargetWarehouseId.HasValue)
+                .WithMessage("Cannot specify the contractor and the target warehouse at the same time.")
+                .Custom((value, context) =>
+                {
+                    if (value.HasValue)
+                    {
+                        var contractor = _mediator.Send(new GetContractorByIdQuery((Guid)value)).Result;
+                        if (!contractor.Success)
+                            context.AddFailure("ContractorId", "Contractor doesn't exist");
+                    }
+                });
 
             RuleFor(d => d)
                 .Custom((value, context) =>

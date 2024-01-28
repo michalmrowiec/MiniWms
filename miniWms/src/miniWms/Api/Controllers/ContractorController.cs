@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using miniWms.Api.Services;
 using miniWms.Application.Functions;
+using miniWms.Application.Functions.Contractors.Queries.GetContractorById;
 using miniWms.Application.Functions.DocumentTypes.Commands.CreateDocumentType;
 using miniWms.Application.Functions.DocumentTypes.Queries.GetAllDocumentTypes;
 using miniWms.Domain.Entities;
@@ -32,6 +33,19 @@ namespace miniWms.Api.Controllers
         public async Task<ActionResult<List<Contractor>>> GetAllContractors()
         {
             return Ok(await _mediator.Send(new GetAllContractorsQuery()));
+        }
+
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<List<Contractor>>> GetAllContractors([FromRoute] Guid Id)
+        {
+            var result = await _mediator.Send(new GetContractorByIdQuery(Id));
+
+            if (result.Success)
+            {
+                return Ok(result.ReturnedObj);
+            }
+
+            return NotFound(result);
         }
 
         [Authorize(Roles = "Admin,Manager")]
