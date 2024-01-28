@@ -77,7 +77,7 @@ namespace miniWms.Migrations
                 {
                     DocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DocumentTypeId = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    ActionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ActionType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     MainWarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TargetWarehouseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -111,7 +111,7 @@ namespace miniWms.Migrations
                 {
                     DocumentTypeId = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     DocumentTypeName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ActionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ActionType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
