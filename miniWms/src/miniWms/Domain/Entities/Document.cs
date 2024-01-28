@@ -8,6 +8,7 @@ namespace miniWms.Domain.Entities
         [MinLength(3)]
         [MaxLength(3)]
         public string DocumentTypeId { get; set; }
+        [MaxLength(50)]
         public ActionType ActionType { get; set; }
         public Guid MainWarehouseId { get; set; }
         public Guid? ContractorId { get; set; }

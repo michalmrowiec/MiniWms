@@ -10,6 +10,7 @@ namespace miniWms.Domain.Entities
         public string DocumentTypeId { get; set; }
         [MaxLength(100)]
         public string DocumentTypeName { get; set; }
+        [MaxLength(50)]
         public ActionType ActionType { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
