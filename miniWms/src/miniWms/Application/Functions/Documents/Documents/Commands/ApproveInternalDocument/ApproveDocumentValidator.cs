@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
 using miniWms.Application.Functions.Documents.Queries.GetDocumentById;
-using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument
 {
-    public class ApproveInternalDocumentValidator : AbstractValidator<ApproveInternalDocumentCommand>
+    public class ApproveDocumentValidator : AbstractValidator<ApproveDocumentCommand>
     {
         private readonly IMediator _mediator;
-        public ApproveInternalDocumentValidator(IMediator mediator)
+        public ApproveDocumentValidator(IMediator mediator)
         {
             _mediator = mediator;
 
@@ -23,11 +22,9 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInte
                     if (!document.Success)
                         context.AddFailure("DocumentId", "Document doesn't exist");
 
-                    if (document.ReturnedObj is not Document internalDocument)
-                        context.AddFailure("DocumentId", "Document is not an Internal Document");
-                    else if (internalDocument.IsComplited)
+                    if (document.ReturnedObj != null && document.ReturnedObj.IsComplited)
                         context.AddFailure("DocumentId", "Document is already completed");
-                }); // TODO fix
+                });
 
             RuleFor(ad => ad.DateOfOperationComplited)
                 .NotNull()

@@ -53,12 +53,12 @@ namespace miniWms.Api.Controllers
         }
 
         [HttpPut("approve")]
-        public async Task<ActionResult<Document>> ApproveInternalDocument([FromBody] ApproveInternalDocumentCommand approveInternalDocument)
+        public async Task<ActionResult<Document>> ApproveDocument([FromBody] ApproveDocumentCommand approveDocument)
         {
             if (_userContextService.GetUserId is not null)
-                approveInternalDocument.ModifiedBy = (Guid)_userContextService.GetUserId;
+                approveDocument.ModifiedBy = (Guid)_userContextService.GetUserId;
 
-            var result = await _mediator.Send(approveInternalDocument);
+            var result = await _mediator.Send(approveDocument);
 
             if (result.Success)
             {

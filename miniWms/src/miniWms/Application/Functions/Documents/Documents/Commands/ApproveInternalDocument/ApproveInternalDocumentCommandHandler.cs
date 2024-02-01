@@ -7,7 +7,7 @@ using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument
 {
-    public class ApproveInternalDocumentCommandHandler : IRequestHandler<ApproveInternalDocumentCommand, ResponseBase<Document>>
+    public class ApproveInternalDocumentCommandHandler : IRequestHandler<ApproveDocumentCommand, ResponseBase<Document>>
     {
         private readonly IDocumentsRepository _documentsRepository;
         private readonly IMediator _mediator;
@@ -19,9 +19,9 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInte
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseBase<Document>> Handle(ApproveInternalDocumentCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase<Document>> Handle(ApproveDocumentCommand request, CancellationToken cancellationToken)
         {
-            var validator = new ApproveInternalDocumentValidator(_mediator);
+            var validator = new ApproveDocumentValidator(_mediator);
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validatorResult.IsValid)
