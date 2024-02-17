@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 
 namespace miniWms.Application.Functions.DocumentTypes.Commands.CreateDocumentType
 {
@@ -10,13 +9,15 @@ namespace miniWms.Application.Functions.DocumentTypes.Commands.CreateDocumentTyp
             RuleFor(c => c.ContractorName)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("{PropertyName} is required");
+                .WithMessage("{PropertyName} is required")
+                .MaximumLength(250)
+                .WithMessage("{PropertyName} must not exceed 250 characters"); ;
 
             RuleFor(c => c.VatId)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required")
-                .MaximumLength(300)
+                .MaximumLength(30)
                 .WithMessage("{PropertyName} must not exceed 30 characters");
 
             RuleFor(d => d.Country)

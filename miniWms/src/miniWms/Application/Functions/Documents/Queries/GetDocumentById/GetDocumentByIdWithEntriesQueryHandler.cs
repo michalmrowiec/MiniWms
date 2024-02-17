@@ -4,14 +4,14 @@ using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Functions.Documents.Queries.GetDocumentById
 {
-    public class GetDocumentByIdQueryHandler : IRequestHandler<GetDocumentByIdQuery, ResponseBase<Document>>
+    public class GetDocumentByIdWithEntriesQueryHandler : IRequestHandler<GetDocumentByIdWithEntriesQuery, ResponseBase<Document>>
     {
         private readonly IDocumentsRepository _documentsRepository;
-        public GetDocumentByIdQueryHandler(IDocumentsRepository documentsRepository)
+        public GetDocumentByIdWithEntriesQueryHandler(IDocumentsRepository documentsRepository)
         {
             _documentsRepository = documentsRepository;
         }
-        public async Task<ResponseBase<Document>> Handle(GetDocumentByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ResponseBase<Document>> Handle(GetDocumentByIdWithEntriesQuery request, CancellationToken cancellationToken)
         {
             Document document;
             try

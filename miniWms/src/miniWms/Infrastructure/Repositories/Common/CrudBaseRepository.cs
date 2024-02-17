@@ -47,9 +47,11 @@ namespace miniWms.Infrastructure.Repositories.Common
 
         public async Task<TEntity> GetByIdAsync(TId id)
         {
-            return await _context
+            var result =  await _context
                 .Set<TEntity>()
                 .FindAsync(id);
+
+            return result ?? throw new Exception("The object with the given id was not found.");
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)

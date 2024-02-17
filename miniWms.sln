@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "miniWms.Client", "miniWms\s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9179E376-1DA0-4508-B6DE-ED64EF0CDA54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "miniWms.UnitTests", "MiniWms\test\miniWms.UnitTests\miniWms.UnitTests.csproj", "{B1499F2C-04A5-43AD-B6C4-2A5C4FE97523}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "miniWms.UnitTests", "MiniWms\test\miniWms.UnitTests\miniWms.UnitTests.csproj", "{B1499F2C-04A5-43AD-B6C4-2A5C4FE97523}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{796BC4FF-805A-4AAB-ABFF-9DC5E86189E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{B1499F2C-04A5-43AD-B6C4-2A5C4FE97523}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1499F2C-04A5-43AD-B6C4-2A5C4FE97523}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1499F2C-04A5-43AD-B6C4-2A5C4FE97523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{796BC4FF-805A-4AAB-ABFF-9DC5E86189E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{796BC4FF-805A-4AAB-ABFF-9DC5E86189E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{796BC4FF-805A-4AAB-ABFF-9DC5E86189E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{796BC4FF-805A-4AAB-ABFF-9DC5E86189E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

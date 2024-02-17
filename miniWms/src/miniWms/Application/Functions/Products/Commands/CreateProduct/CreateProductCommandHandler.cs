@@ -7,14 +7,22 @@ namespace miniWms.Application.Functions.Products.Commands.CreateProduct
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ResponseBase<Product>>
     {
         private readonly IProductsRepository _productsRepository;
-        public CreateProductCommandHandler(IProductsRepository productsRepository)
+        private readonly IMediator _mediator;
+        public CreateProductCommandHandler(IProductsRepository productsRepository, IMediator mediator)
         {
             _productsRepository = productsRepository;
+            _mediator = mediator;
         }
 
         public async Task<ResponseBase<Product>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            //TODO: add validator
+            var validator = new CreateProductValidator(_mediator);
+            var validatorResult = await validator.ValidateAsync(request, cancellationToken);
+
+            if (!validatorResult.IsValid)
+            {
+                return new ResponseBase<Product>(validatorResult);
+            }
 
             var product = new Product()
             {

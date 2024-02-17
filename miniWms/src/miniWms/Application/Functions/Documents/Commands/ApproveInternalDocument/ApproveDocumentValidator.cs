@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
 using miniWms.Application.Functions.Documents.Queries.GetDocumentById;
-using miniWms.Domain.Entities;
 
-namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument
+namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocument
 {
-    public class ApproveInternalDocumentValidator : AbstractValidator<ApproveInternalDocumentCommand>
+    public class ApproveDocumentValidator : AbstractValidator<ApproveDocumentCommand>
     {
         private readonly IMediator _mediator;
-        public ApproveInternalDocumentValidator(IMediator mediator)
+        public ApproveDocumentValidator(IMediator mediator)
         {
             _mediator = mediator;
 
@@ -18,18 +17,16 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInte
                 .WithMessage("{PropertyName} is required")
                 .Custom((value, context) =>
                 {
-                    var document = _mediator.Send(new GetDocumentByIdQuery(value)).Result;
+                    var document = _mediator.Send(new GetDocumentByIdWithEntriesQuery(value)).Result;
 
                     if (!document.Success)
                         context.AddFailure("DocumentId", "Document doesn't exist");
 
-                    if (document.ReturnedObj is not Document internalDocument)
-                        context.AddFailure("DocumentId", "Document is not an Internal Document");
-                    else if (internalDocument.IsComplited)
+                    if (document.ReturnedObj != null && document.ReturnedObj.IsCompleted)
                         context.AddFailure("DocumentId", "Document is already completed");
-                }); // TODO fix
+                });
 
-            RuleFor(ad => ad.DateOfOperationComplited)
+            RuleFor(ad => ad.DateOfOperationCompleted)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required");

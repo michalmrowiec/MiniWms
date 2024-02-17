@@ -1,15 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 using miniWms.Application.Contracts.Utilities;
 
 namespace miniWms.Infrastructure.Utilities
 {
-    public class EfUnitOfWork : IUnitOfWork
+    public class EfTransactionManager : ITransactionManager
     {
         private readonly MiniWmsDbContext _context;
         private IDbContextTransaction _transaction;
 
-        public EfUnitOfWork(MiniWmsDbContext context)
+        public EfTransactionManager(MiniWmsDbContext context)
         {
             _context = context;
         }
