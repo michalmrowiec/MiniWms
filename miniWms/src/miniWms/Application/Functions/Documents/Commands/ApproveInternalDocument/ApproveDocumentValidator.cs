@@ -2,7 +2,7 @@
 using MediatR;
 using miniWms.Application.Functions.Documents.Queries.GetDocumentById;
 
-namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument
+namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocument
 {
     public class ApproveDocumentValidator : AbstractValidator<ApproveDocumentCommand>
     {

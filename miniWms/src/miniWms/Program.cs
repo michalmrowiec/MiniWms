@@ -72,7 +72,7 @@ builder.Services.AddScoped(typeof(IWarehouseEntriesRepository), typeof(Warehouse
 builder.Services.AddScoped(typeof(IDocumentEntriesRepository), typeof(DocumentEntriesRepository));
 builder.Services.AddScoped(typeof(IDocumentsRepository), typeof(DocumentsRepository));
 
-builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+builder.Services.AddScoped<IUnitOfTransaction, EfUnitOfTransaction>();
 
 var app = builder.Build();
 

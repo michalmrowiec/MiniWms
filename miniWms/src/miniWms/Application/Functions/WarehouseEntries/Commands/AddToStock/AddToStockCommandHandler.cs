@@ -10,8 +10,8 @@ namespace miniWms.Application.Functions.WarehouseEntries.Commands.AddToStock
     {
         private readonly IWarehouseEntriesRepository _warehouseEntriesRepository;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        public AddToStockCommandHandler(IWarehouseEntriesRepository warehouseEntriesRepository, IMediator mediator, IUnitOfWork unitOfWork)
+        private readonly IUnitOfTransaction _unitOfWork;
+        public AddToStockCommandHandler(IWarehouseEntriesRepository warehouseEntriesRepository, IMediator mediator, IUnitOfTransaction unitOfWork)
         {
             _warehouseEntriesRepository = warehouseEntriesRepository;
             _mediator = mediator;

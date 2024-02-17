@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using miniWms.Domain.Entities;
 
-namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument
+namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
 {
     public class CreateDocumentCommand : IRequest<ResponseBase<Document>>
     {

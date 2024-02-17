@@ -5,14 +5,14 @@ using miniWms.Application.Functions.Documents.Queries.GetDocumentById;
 using miniWms.Application.Functions.WarehouseEntries.Commands.AddToStock;
 using miniWms.Domain.Entities;
 
-namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument
+namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocument
 {
     public class ApproveInternalDocumentCommandHandler : IRequestHandler<ApproveDocumentCommand, ResponseBase<Document>>
     {
         private readonly IDocumentsRepository _documentsRepository;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        public ApproveInternalDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, IUnitOfWork unitOfWork)
+        private readonly IUnitOfTransaction _unitOfWork;
+        public ApproveInternalDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, IUnitOfTransaction unitOfWork)
         {
             _documentsRepository = documentsRepository;
             _mediator = mediator;
@@ -63,7 +63,7 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInte
                 return new ResponseBase<Document>(false, "Something went wrong." + e.Message);
             }
 
-            return new ResponseBase<Document>((Document)updatedInternalDocument);
+            return new ResponseBase<Document>(updatedInternalDocument);
         }
     }
 }

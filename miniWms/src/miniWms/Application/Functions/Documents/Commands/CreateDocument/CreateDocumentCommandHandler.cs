@@ -5,14 +5,14 @@ using miniWms.Application.Functions.WarehouseEntries.Commands.AddToStock;
 using miniWms.Application.Functions.WarehouseEntries.Commands.SubtractFromStock;
 using miniWms.Domain.Entities;
 
-namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument
+namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
 {
     public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, ResponseBase<Document>>
     {
         private readonly IDocumentsRepository _documentsRepository;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        public CreateDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, IUnitOfWork unitOfWork)
+        private readonly IUnitOfTransaction _unitOfWork;
+        public CreateDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, IUnitOfTransaction unitOfWork)
         {
             _documentsRepository = documentsRepository;
             _mediator = mediator;

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using miniWms.Domain.Entities;
 
-namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument
+namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocument
 {
     public class ApproveDocumentCommand : IRequest<ResponseBase<Document>>
     {

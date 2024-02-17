@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using miniWms.Api.Services;
-using miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument;
-using miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument;
+using miniWms.Application.Functions.Documents.Commands.ApproveInternalDocument;
+using miniWms.Application.Functions.Documents.Commands.CreateDocument;
 using miniWms.Application.Functions.Documents.Queries.GetSortedAndFilteredDocuments;
 using miniWms.Domain.Entities;
 using miniWms.Domain.Models;
