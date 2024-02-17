@@ -31,4 +31,8 @@
     <ProjectReference Include="..\..\src\miniWms\miniWms.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\Contractors\Queries\" />
+  </ItemGroup>
+
 </Project>

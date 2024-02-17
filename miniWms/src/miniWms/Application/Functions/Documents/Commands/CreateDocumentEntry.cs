@@ -1,4 +1,4 @@
-﻿namespace miniWms.Application.Functions.Documents.Documents.Commands
+﻿namespace miniWms.Application.Functions.Documents.Commands
 {
     public class CreateDocumentEntry
     {

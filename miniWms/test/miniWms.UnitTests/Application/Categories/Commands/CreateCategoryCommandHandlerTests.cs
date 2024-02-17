@@ -1,7 +1,6 @@
 ﻿using miniWms.Application.Contracts;
 using miniWms.Application.Functions;
 using miniWms.Application.Functions.Categories.Commands.CreateCategory;
-using miniWms.Application.Functions.Warehouses.Commands.CreateWarehouse;
 using miniWms.Domain.Entities;
 
 namespace miniWms.UnitTests.Application.Categories.Commands

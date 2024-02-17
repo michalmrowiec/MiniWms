@@ -5,23 +5,23 @@ using miniWms.Application.Functions.Documents.Queries.GetDocumentById;
 using miniWms.Application.Functions.WarehouseEntries.Commands.AddToStock;
 using miniWms.Domain.Entities;
 
-namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument
+namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocument
 {
-    public class ApproveInternalDocumentCommandHandler : IRequestHandler<ApproveInternalDocumentCommand, ResponseBase<Document>>
+    public class ApproveInternalDocumentCommandHandler : IRequestHandler<ApproveDocumentCommand, ResponseBase<Document>>
     {
         private readonly IDocumentsRepository _documentsRepository;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        public ApproveInternalDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, IUnitOfWork unitOfWork)
+        private readonly ITransactionManager _unitOfWork;
+        public ApproveInternalDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, ITransactionManager unitOfWork)
         {
             _documentsRepository = documentsRepository;
             _mediator = mediator;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ResponseBase<Document>> Handle(ApproveInternalDocumentCommand request, CancellationToken cancellationToken)
+        public async Task<ResponseBase<Document>> Handle(ApproveDocumentCommand request, CancellationToken cancellationToken)
         {
-            var validator = new ApproveInternalDocumentValidator(_mediator);
+            var validator = new ApproveDocumentValidator(_mediator);
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validatorResult.IsValid)
@@ -29,7 +29,7 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInte
                 return new ResponseBase<Document>(validatorResult);
             }
 
-            var documentResponse = await _mediator.Send(new GetDocumentByIdQuery(request.DocumentId), cancellationToken);
+            var documentResponse = await _mediator.Send(new GetDocumentByIdWithEntriesQuery(request.DocumentId), cancellationToken);
 
 
             if (documentResponse.ReturnedObj is not Document internalDocument)
@@ -37,8 +37,8 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInte
                 return new ResponseBase<Document>(false, "Something went wrong.");
             }
 
-            internalDocument.IsComplited = true;
-            internalDocument.DateOfOperationComplited = request.DateOfOperationComplited;
+            internalDocument.IsCompleted = true;
+            internalDocument.DateOfOperationCompleted = request.DateOfOperationCompleted;
             internalDocument.ModifiedBy = request.ModifiedBy;
             internalDocument.ModifiedAt = DateTime.UtcNow;
 
@@ -63,7 +63,7 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.ApproveInte
                 return new ResponseBase<Document>(false, "Something went wrong." + e.Message);
             }
 
-            return new ResponseBase<Document>((Document)updatedInternalDocument);
+            return new ResponseBase<Document>(updatedInternalDocument);
         }
     }
 }

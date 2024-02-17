@@ -140,7 +140,8 @@ namespace miniWms.Migrations
 
                     b.Property<string>("ActionType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Address")
                         .HasMaxLength(250)
@@ -169,7 +170,7 @@ namespace miniWms.Migrations
                     b.Property<DateTime>("DateOfOperation")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfOperationComplited")
+                    b.Property<DateTime?>("DateOfOperationCompleted")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DocumentTypeId")
@@ -177,7 +178,7 @@ namespace miniWms.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
-                    b.Property<bool>("IsComplited")
+                    b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("MainWarehouseId")
@@ -265,7 +266,8 @@ namespace miniWms.Migrations
 
                     b.Property<string>("ActionType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");

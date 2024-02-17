@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  miniwms:
+    container_name: miniwms
+    image: ${DOCKER_REGISTRY-}miniwms
+    build:
+      context: .
+      dockerfile: miniWms/src/miniWms/Dockerfile
+  db:
+    container_name: database
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    environment:
+      SA_PASSWORD: "Strong@Passw0rd"
+      ACCEPT_EULA: "Y"

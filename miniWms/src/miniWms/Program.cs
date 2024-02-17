@@ -59,7 +59,7 @@ builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>(
 builder.Services.AddSingleton(authenticationSettings);
 
 builder.Services.AddDbContext<MiniWmsDbContext>(options =>
-    options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=MiniWmsDb;Trusted_Connection=True;"));
+options.UseSqlServer(builder.Configuration.GetConnectionString("ContainerDb"))); // LocalDb / ContainerDb
 
 builder.Services.AddScoped(typeof(IEmployeesRepository), typeof(EmployeesRepository));
 builder.Services.AddScoped(typeof(IWarehousesRepository), typeof(WarehousesRepository));
@@ -72,7 +72,7 @@ builder.Services.AddScoped(typeof(IWarehouseEntriesRepository), typeof(Warehouse
 builder.Services.AddScoped(typeof(IDocumentEntriesRepository), typeof(DocumentEntriesRepository));
 builder.Services.AddScoped(typeof(IDocumentsRepository), typeof(DocumentsRepository));
 
-builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+builder.Services.AddScoped<ITransactionManager, EfTransactionManager>();
 
 var app = builder.Build();
 

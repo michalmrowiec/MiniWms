@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using miniWms.Api.Services;
-using miniWms.Application.Functions.Documents.Documents.Commands.ApproveInternalDocument;
-using miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument;
+using miniWms.Application.Functions.Documents.Commands.ApproveInternalDocument;
+using miniWms.Application.Functions.Documents.Commands.CreateDocument;
+using miniWms.Application.Functions.Documents.Commands.DeleteDocument;
 using miniWms.Application.Functions.Documents.Queries.GetSortedAndFilteredDocuments;
 using miniWms.Domain.Entities;
 using miniWms.Domain.Models;
@@ -53,18 +54,30 @@ namespace miniWms.Api.Controllers
         }
 
         [HttpPut("approve")]
-        public async Task<ActionResult<Document>> ApproveInternalDocument([FromBody] ApproveInternalDocumentCommand approveInternalDocument)
+        public async Task<ActionResult<Document>> ApproveDocument([FromBody] ApproveDocumentCommand approveDocument)
         {
             if (_userContextService.GetUserId is not null)
-                approveInternalDocument.ModifiedBy = (Guid)_userContextService.GetUserId;
+                approveDocument.ModifiedBy = (Guid)_userContextService.GetUserId;
 
-            var result = await _mediator.Send(approveInternalDocument);
+            var result = await _mediator.Send(approveDocument);
 
             if (result.Success)
             {
                 return Ok(result.ReturnedObj);
             }
             return BadRequest(result);
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult<Document>> DeleteDocument([FromRoute] Guid Id)
+        {
+            var result = await _mediator.Send(new DeleteDocumentCommand(Id));
+
+            if (result.Success)
+            {
+                return NoContent();
+            }
+            return BadRequest(result.Message);
         }
     }
 }

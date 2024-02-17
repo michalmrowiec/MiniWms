@@ -5,18 +5,18 @@ using miniWms.Application.Functions.WarehouseEntries.Commands.AddToStock;
 using miniWms.Application.Functions.WarehouseEntries.Commands.SubtractFromStock;
 using miniWms.Domain.Entities;
 
-namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocument
+namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
 {
     public class CreateDocumentCommandHandler : IRequestHandler<CreateDocumentCommand, ResponseBase<Document>>
     {
         private readonly IDocumentsRepository _documentsRepository;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        public CreateDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, IUnitOfWork unitOfWork)
+        private readonly ITransactionManager _transactionManager;
+        public CreateDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, ITransactionManager transactionManager)
         {
             _documentsRepository = documentsRepository;
             _mediator = mediator;
-            _unitOfWork = unitOfWork;
+            _transactionManager = transactionManager;
         }
 
         public async Task<ResponseBase<Document>> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
@@ -50,9 +50,9 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocum
                 TargetWarehouseId = request.TargetWarehouseId,
                 ContractorId = request.ContractorId,
                 ActionType = request.ActionType,
-                IsComplited = request.IsComplited,
+                IsCompleted = request.IsCompleted,
                 DateOfOperation = request.DateOfOperation,
-                DateOfOperationComplited = request.DateOfOperationComplited,
+                DateOfOperationCompleted = request.DateOfOperationCompleted,
                 Comments = request.Comments,
                 Country = request.Country,
                 City = request.City,
@@ -65,6 +65,9 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocum
                 CreatedBy = request.CreatedBy,
                 ModifiedBy = request.CreatedBy
             };
+
+            if (newDocument.DateOfOperationCompleted == null)
+                newDocument.DateOfOperationCompleted = newDocument.DateOfOperation;
 
             Document createdDocument;
 
@@ -97,21 +100,20 @@ namespace miniWms.Application.Functions.Documents.Documents.Commands.CreateDocum
                 } }
             };
 
-
             try
             {
-                await _unitOfWork.BeginTransactionAsync();
+                await _transactionManager.BeginTransactionAsync();
 
                 createdDocument = await _documentsRepository.CreateAsync(newDocument);
 
-                await operations[(newDocument.ActionType, newDocument.IsComplited)].Invoke();
+                await operations[(newDocument.ActionType, newDocument.IsCompleted)].Invoke();
 
-                await _unitOfWork.CommitTransactionAsync();
+                await _transactionManager.CommitTransactionAsync();
             }
             catch (Exception ex)
             {
-                await _unitOfWork.RollbackTransactionAsync();
-                return new ResponseBase<Document>(false, "Something went wrong." + ex.Message);
+                await _transactionManager.RollbackTransactionAsync();
+                return new ResponseBase<Document>(false, "Something went wrong. " + ex.Message);
             }
 
             return new ResponseBase<Document>(createdDocument);

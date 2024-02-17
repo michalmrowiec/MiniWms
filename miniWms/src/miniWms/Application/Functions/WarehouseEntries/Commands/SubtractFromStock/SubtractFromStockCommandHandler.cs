@@ -10,8 +10,8 @@ namespace miniWms.Application.Functions.WarehouseEntries.Commands.SubtractFromSt
     {
         private readonly IWarehouseEntriesRepository _warehouseEntriesRepository;
         private readonly IMediator _mediator;
-        private readonly IUnitOfWork _unitOfWork;
-        public SubtractFromStockCommandHandler(IWarehouseEntriesRepository warehouseEntriesRepository, IMediator mediator, IUnitOfWork unitOfWork)
+        private readonly ITransactionManager _unitOfWork;
+        public SubtractFromStockCommandHandler(IWarehouseEntriesRepository warehouseEntriesRepository, IMediator mediator, ITransactionManager unitOfWork)
         {
             _warehouseEntriesRepository = warehouseEntriesRepository;
             _mediator = mediator;
