@@ -3,12 +3,12 @@ using miniWms.Application.Contracts.Utilities;
 
 namespace miniWms.Infrastructure.Utilities
 {
-    public class EfUnitOfTransaction : IUnitOfTransaction
+    public class EfTransactionManager : ITransactionManager
     {
         private readonly MiniWmsDbContext _context;
         private IDbContextTransaction _transaction;
 
-        public EfUnitOfTransaction(MiniWmsDbContext context)
+        public EfTransactionManager(MiniWmsDbContext context)
         {
             _context = context;
         }

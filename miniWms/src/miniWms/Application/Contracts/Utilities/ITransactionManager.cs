@@ -1,6 +1,6 @@
 ﻿namespace miniWms.Application.Contracts.Utilities
 {
-    public interface IUnitOfTransaction
+    public interface ITransactionManager
     {
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();

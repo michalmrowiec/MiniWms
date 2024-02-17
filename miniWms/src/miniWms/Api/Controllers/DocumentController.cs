@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using miniWms.Api.Services;
 using miniWms.Application.Functions.Documents.Commands.ApproveInternalDocument;
 using miniWms.Application.Functions.Documents.Commands.CreateDocument;
+using miniWms.Application.Functions.Documents.Commands.DeleteDocument;
 using miniWms.Application.Functions.Documents.Queries.GetSortedAndFilteredDocuments;
 using miniWms.Domain.Entities;
 using miniWms.Domain.Models;
@@ -65,6 +66,18 @@ namespace miniWms.Api.Controllers
                 return Ok(result.ReturnedObj);
             }
             return BadRequest(result);
+        }
+
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult<Document>> DeleteDocument([FromRoute] Guid Id)
+        {
+            var result = await _mediator.Send(new DeleteDocumentCommand(Id));
+
+            if (result.Success)
+            {
+                return NoContent();
+            }
+            return BadRequest(result.Message);
         }
     }
 }

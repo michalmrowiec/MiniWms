@@ -11,8 +11,8 @@ namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocume
     {
         private readonly IDocumentsRepository _documentsRepository;
         private readonly IMediator _mediator;
-        private readonly IUnitOfTransaction _unitOfWork;
-        public ApproveInternalDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, IUnitOfTransaction unitOfWork)
+        private readonly ITransactionManager _unitOfWork;
+        public ApproveInternalDocumentCommandHandler(IDocumentsRepository documentsRepository, IMediator mediator, ITransactionManager unitOfWork)
         {
             _documentsRepository = documentsRepository;
             _mediator = mediator;
@@ -29,7 +29,7 @@ namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocume
                 return new ResponseBase<Document>(validatorResult);
             }
 
-            var documentResponse = await _mediator.Send(new GetDocumentByIdQuery(request.DocumentId), cancellationToken);
+            var documentResponse = await _mediator.Send(new GetDocumentByIdWithEntriesQuery(request.DocumentId), cancellationToken);
 
 
             if (documentResponse.ReturnedObj is not Document internalDocument)

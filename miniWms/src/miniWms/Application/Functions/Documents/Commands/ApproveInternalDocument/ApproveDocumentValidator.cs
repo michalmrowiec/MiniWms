@@ -17,7 +17,7 @@ namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocume
                 .WithMessage("{PropertyName} is required")
                 .Custom((value, context) =>
                 {
-                    var document = _mediator.Send(new GetDocumentByIdQuery(value)).Result;
+                    var document = _mediator.Send(new GetDocumentByIdWithEntriesQuery(value)).Result;
 
                     if (!document.Success)
                         context.AddFailure("DocumentId", "Document doesn't exist");

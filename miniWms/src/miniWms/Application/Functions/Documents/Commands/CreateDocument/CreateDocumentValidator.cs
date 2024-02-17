@@ -71,8 +71,15 @@ namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
                     if (documentType != null && !documentType.ActionType.Equals(value.ActionType))
                         context.AddFailure("ActionType", "Type of action doesn't exist.");
 
-                    if(value.DateOfOperationCompleted.HasValue && !value.IsCompleted)
+                    if (value.DateOfOperationCompleted.HasValue && !value.IsCompleted)
                         context.AddFailure("DateOfOperationCompleted", "Only a completed operation can have an operation completed date.");
+
+                    if (!value.DocumentEntries
+                    .Select(de => de.ProductId)
+                    .Distinct()
+                    .Count()
+                    .Equals(value.DocumentEntries.Count))
+                        context.AddFailure("Products in document entries cannot be repeated.");
                 });
 
             RuleFor(d => d.Country)

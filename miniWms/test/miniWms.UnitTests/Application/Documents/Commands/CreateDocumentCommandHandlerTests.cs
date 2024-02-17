@@ -50,11 +50,6 @@ namespace miniWms.UnitTests.Application.Documents.Commands
                         {
                             ProductId =  new Guid("14000001-0000-0000-0000-100000000000"),
                             Quantity = 70
-                        },
-                        new CreateDocumentEntry()
-                        {
-                            ProductId =  new Guid("14000001-0000-0000-0000-100000000000"),
-                            Quantity = 70
                         }
                     }
                 },
@@ -281,7 +276,7 @@ namespace miniWms.UnitTests.Application.Documents.Commands
             repo.Setup(m => m.CreateAsync(It.IsAny<Document>()))
                 .ReturnsAsync(document);
 
-            var unitOfTransaction = new Mock<IUnitOfTransaction>();
+            var unitOfTransaction = new Mock<ITransactionManager>();
 
             CreateDocumentCommandHandler handler = new(repo.Object, mediator.Object, unitOfTransaction.Object);
 
@@ -332,6 +327,49 @@ namespace miniWms.UnitTests.Application.Documents.Commands
                         }
                     }
                 }
+            },
+            new object[]
+            {
+                new DocumentType()
+                {
+                    DocumentTypeId = "EXR",
+                    ActionType = ActionType.ExternalReceipt,
+                    DocumentTypeName = "External Receipt",
+                    CreatedAt = new DateTime(2021, 10, 23),
+                    ModifiedAt = new DateTime(2021, 10, 23)
+                },
+
+                new CreateDocumentCommand()
+                {
+                    DocumentTypeId = "EXR",
+                    ActionType = ActionType.ExternalReceipt,
+                    MainWarehouseId = new Guid("78000001-0000-0000-0000-100000000000"),
+                    ContractorId = new Guid("99000001-0000-0000-0000-100000000000"),
+                    TargetWarehouseId = null,
+                    IsCompleted = true,
+                    DateOfOperation = new DateTime(2022, 10, 23),
+                    DateOfOperationCompleted = null,
+                    Comments = "Some comments",
+                    Country = null,
+                    City = null,
+                    Region = null,
+                    PostalCode = null,
+                    Address = null,
+                    CreatedBy = null,
+                    DocumentEntries = new List<CreateDocumentEntry>()
+                    {
+                        new CreateDocumentEntry()
+                        {
+                            ProductId =  new Guid("14000001-0000-0000-0000-100000000000"),
+                            Quantity = 70
+                        },
+                        new CreateDocumentEntry()
+                        {
+                            ProductId =  new Guid("14000001-0000-0000-0000-100000000000"),
+                            Quantity = 70
+                        }
+                    }
+                },
             },
             new object[]
             {
@@ -471,7 +509,7 @@ namespace miniWms.UnitTests.Application.Documents.Commands
             repo.Setup(m => m.CreateAsync(It.IsAny<Document>()))
                 .ReturnsAsync(new Document());
 
-            var unitOfTransaction = new Mock<IUnitOfTransaction>();
+            var unitOfTransaction = new Mock<ITransactionManager>();
 
             CreateDocumentCommandHandler handler = new(repo.Object, mediator.Object, unitOfTransaction.Object);
 
