@@ -37,8 +37,8 @@ namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocume
                 return new ResponseBase<Document>(false, "Something went wrong.");
             }
 
-            internalDocument.IsComplited = true;
-            internalDocument.DateOfOperationComplited = request.DateOfOperationComplited;
+            internalDocument.IsCompleted = true;
+            internalDocument.DateOfOperationCompleted = request.DateOfOperationCompleted;
             internalDocument.ModifiedBy = request.ModifiedBy;
             internalDocument.ModifiedAt = DateTime.UtcNow;
 

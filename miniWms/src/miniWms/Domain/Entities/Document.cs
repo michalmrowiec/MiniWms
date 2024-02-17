@@ -13,9 +13,9 @@ namespace miniWms.Domain.Entities
         public Guid MainWarehouseId { get; set; }
         public Guid? ContractorId { get; set; }
         public Guid? TargetWarehouseId { get; set; }
-        public bool IsComplited { get; set; }
+        public bool IsCompleted { get; set; }
         public DateTime DateOfOperation { get; set; }
-        public DateTime? DateOfOperationComplited { get; set; }
+        public DateTime? DateOfOperationCompleted { get; set; }
         public string? Comments { get; set; }
         [MaxLength(100)]
         public string? Country { get; set; }

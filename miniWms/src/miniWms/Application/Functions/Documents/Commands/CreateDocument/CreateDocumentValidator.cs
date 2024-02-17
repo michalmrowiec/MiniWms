@@ -3,6 +3,7 @@ using MediatR;
 using miniWms.Application.Functions.Contractors.Queries.GetContractorById;
 using miniWms.Application.Functions.DocumentTypes.Queries.GetAllDocumentTypes;
 using miniWms.Application.Functions.Warehouses.Queries.GetWarehouseById;
+using miniWms.Domain.Entities;
 
 namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
 {
@@ -50,6 +51,14 @@ namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
                     }
                 });
 
+            RuleFor(d => d.IsCompleted)
+                .Equal(true).When(d => d.ActionType != ActionType.InternalTransfer)
+                .WithMessage("{PropertyName} Only an internal transfer can have a Completed value of false.");
+
+            RuleFor(d => d.DateOfOperationCompleted)
+                .GreaterThanOrEqualTo(d => d.DateOfOperation)
+                .WithMessage("{PropertyName} The operation end date must be equal to or older than the operation date.");
+
             RuleFor(d => d)
                 .Custom((value, context) =>
                 {
@@ -61,6 +70,9 @@ namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
                     var documentType = documentTypes.FirstOrDefault(dt => dt.DocumentTypeId.Equals(value.DocumentTypeId));
                     if (documentType != null && !documentType.ActionType.Equals(value.ActionType))
                         context.AddFailure("ActionType", "Type of action doesn't exist.");
+
+                    if(value.DateOfOperationCompleted.HasValue && !value.IsCompleted)
+                        context.AddFailure("DateOfOperationCompleted", "Only a completed operation can have an operation completed date.");
                 });
 
             RuleFor(d => d.Country)

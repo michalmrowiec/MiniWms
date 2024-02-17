@@ -34,9 +34,9 @@ namespace miniWms.UnitTests.Application.Documents.Commands
                     MainWarehouseId = new Guid("78000001-0000-0000-0000-100000000000"),
                     ContractorId = new Guid("99000001-0000-0000-0000-100000000000"),
                     TargetWarehouseId = null,
-                    IsComplited = true,
+                    IsCompleted = true,
                     DateOfOperation = new DateTime(2022, 10, 23),
-                    DateOfOperationComplited = new DateTime(2022, 10, 23),
+                    DateOfOperationCompleted = null,
                     Comments = "Some comments",
                     Country = null,
                     City = null,
@@ -55,13 +55,75 @@ namespace miniWms.UnitTests.Application.Documents.Commands
                 },
                 new Document()
                 {
+                    DocumentId = new Guid("12000001-0000-0000-0000-100000000000"),
+                    DocumentTypeId = "EXR",
                     ActionType = ActionType.ExternalReceipt,
                     MainWarehouseId = new Guid("78000001-0000-0000-0000-100000000000"),
                     ContractorId = new Guid("99000001-0000-0000-0000-100000000000"),
                     TargetWarehouseId = null,
-                    IsComplited = true,
+                    IsCompleted = true,
                     DateOfOperation = new DateTime(2022, 10, 23),
-                    DateOfOperationComplited = new DateTime(2022, 10, 23),
+                    DateOfOperationCompleted = new DateTime(2022, 10, 23),
+                    Comments = "Some comments",
+                    Country = null,
+                    City = null,
+                    Region = null,
+                    PostalCode = null,
+                    Address = null,
+                    CreatedBy = null,
+                    ModifiedBy = null,
+                    CreatedAt = new DateTime(2022, 10, 23),
+                    ModifiedAt = new DateTime(2022, 10, 23)
+                }
+            },
+            new object[]
+            {
+                new DocumentType()
+                {
+                    DocumentTypeId = "INT",
+                    ActionType = ActionType.InternalTransfer,
+                    DocumentTypeName = "Internal Transfer",
+                    CreatedAt = new DateTime(2021, 10, 23),
+                    ModifiedAt = new DateTime(2021, 10, 23)
+                },
+
+                new CreateDocumentCommand()
+                {
+                    DocumentTypeId = "INT",
+                    ActionType = ActionType.InternalTransfer,
+                    MainWarehouseId = new Guid("78000001-0000-0000-0000-100000000000"),
+                    ContractorId = null,
+                    TargetWarehouseId = new Guid("78000002-0000-0000-0000-100000000000"),
+                    IsCompleted = true,
+                    DateOfOperation = new DateTime(2022, 10, 23),
+                    DateOfOperationCompleted = new DateTime(2022, 10, 25),
+                    Comments = "Some comments",
+                    Country = null,
+                    City = null,
+                    Region = null,
+                    PostalCode = null,
+                    Address = null,
+                    CreatedBy = null,
+                    DocumentEntries = new List<CreateDocumentEntry>()
+                    {
+                        new CreateDocumentEntry()
+                        {
+                            ProductId =  new Guid("14000001-0000-0000-0000-200000000000"),
+                            Quantity = 20
+                        }
+                    }
+                },
+                new Document()
+                {
+                    DocumentId = new Guid("12000002-0000-0000-0000-100000000000"),
+                    DocumentTypeId = "INT",
+                    ActionType = ActionType.InternalTransfer,
+                    MainWarehouseId = new Guid("78000001-0000-0000-0000-100000000000"),
+                    ContractorId = null,
+                    TargetWarehouseId = new Guid("78000002-0000-0000-0000-100000000000"),
+                    IsCompleted = true,
+                    DateOfOperation = new DateTime(2022, 10, 23),
+                    DateOfOperationCompleted = new DateTime(2022, 10, 25),
                     Comments = "Some comments",
                     Country = null,
                     City = null,

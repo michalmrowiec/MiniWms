@@ -10,9 +10,9 @@ namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
         public Guid MainWarehouseId { get; set; }
         public Guid? ContractorId { get; set; }
         public Guid? TargetWarehouseId { get; set; }
-        public bool IsComplited { get; set; }
+        public bool IsCompleted { get; set; } = true;
         public DateTime DateOfOperation { get; set; }
-        public DateTime? DateOfOperationComplited { get; set; }
+        public DateTime? DateOfOperationCompleted { get; set; }
         public string? Comments { get; set; }
         public string? Country { get; set; }
         public string? City { get; set; }

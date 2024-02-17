@@ -50,9 +50,9 @@ namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
                 TargetWarehouseId = request.TargetWarehouseId,
                 ContractorId = request.ContractorId,
                 ActionType = request.ActionType,
-                IsComplited = request.IsComplited,
+                IsCompleted = request.IsCompleted,
                 DateOfOperation = request.DateOfOperation,
-                DateOfOperationComplited = request.DateOfOperationComplited,
+                DateOfOperationCompleted = request.DateOfOperationCompleted,
                 Comments = request.Comments,
                 Country = request.Country,
                 City = request.City,
@@ -65,6 +65,9 @@ namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
                 CreatedBy = request.CreatedBy,
                 ModifiedBy = request.CreatedBy
             };
+
+            if (newDocument.DateOfOperationCompleted == null)
+                newDocument.DateOfOperationCompleted = newDocument.DateOfOperation;
 
             Document createdDocument;
 
@@ -97,14 +100,13 @@ namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
                 } }
             };
 
-
             try
             {
                 await _unitOfWork.BeginTransactionAsync();
 
                 createdDocument = await _documentsRepository.CreateAsync(newDocument);
 
-                await operations[(newDocument.ActionType, newDocument.IsComplited)].Invoke();
+                await operations[(newDocument.ActionType, newDocument.IsCompleted)].Invoke();
 
                 await _unitOfWork.CommitTransactionAsync();
             }

@@ -22,11 +22,11 @@ namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocume
                     if (!document.Success)
                         context.AddFailure("DocumentId", "Document doesn't exist");
 
-                    if (document.ReturnedObj != null && document.ReturnedObj.IsComplited)
+                    if (document.ReturnedObj != null && document.ReturnedObj.IsCompleted)
                         context.AddFailure("DocumentId", "Document is already completed");
                 });
 
-            RuleFor(ad => ad.DateOfOperationComplited)
+            RuleFor(ad => ad.DateOfOperationCompleted)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required");

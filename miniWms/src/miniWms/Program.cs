@@ -59,7 +59,7 @@ builder.Services.AddScoped<IPasswordHasher<Employee>, PasswordHasher<Employee>>(
 builder.Services.AddSingleton(authenticationSettings);
 
 builder.Services.AddDbContext<MiniWmsDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"))); // LocalDb / ContainerDb
+options.UseSqlServer(builder.Configuration.GetConnectionString("ContainerDb"))); // LocalDb / ContainerDb
 
 builder.Services.AddScoped(typeof(IEmployeesRepository), typeof(EmployeesRepository));
 builder.Services.AddScoped(typeof(IWarehousesRepository), typeof(WarehousesRepository));

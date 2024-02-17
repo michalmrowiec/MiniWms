@@ -7,7 +7,7 @@ namespace miniWms.Application.Functions.Documents.Commands.ApproveInternalDocume
     {
         public Guid DocumentId { get; set; }
 
-        public DateTime? DateOfOperationComplited { get; set; }
+        public DateTime? DateOfOperationCompleted { get; set; }
         public Guid? ModifiedBy { get; set; }
 
     }
