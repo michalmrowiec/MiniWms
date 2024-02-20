@@ -29,31 +29,37 @@ namespace miniWms.Application.Functions.Documents.Commands.DeleteDocument
 
             var document = documentResponse.ReturnedObj;
 
-            var operations = new Dictionary<(ActionType ActionType, bool IsComplited), Func<Task>>()
+            var operations = new Dictionary<(ActionType ActionType, bool IsComplited), Func<Task<ResponseBase>>>()
             {
                 { (ActionType.InternalTransfer, IsComplited: true), async () => {
-                    await _mediator.Send(new AddToStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
-                    await _mediator.Send(new SubtractFromStockCommand((Guid)document.TargetWarehouseId, document.DocumentEntries), cancellationToken);
+                    var res1 = await _mediator.Send(new AddToStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
+                    var res2 = await _mediator.Send(new SubtractFromStockCommand((Guid)document.TargetWarehouseId, document.DocumentEntries), cancellationToken);
+
+                    if(res1.Success && res2.Success && res1.ReturnedObj != null && res2.ReturnedObj != null)
+                        return new ResponseBase<List<WarehouseEntry>>(res1.ReturnedObj.Concat(res2.ReturnedObj).ToList());
+
+                    return new ResponseBase(false, "Something went wrong.");
+
                 } },
 
                 { (ActionType.InternalTransfer, IsComplited: false), async () => {
-                    await _mediator.Send(new AddToStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
+                    return await _mediator.Send(new AddToStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
                 } },
 
                 { (ActionType.InternalReceipt, IsComplited: true), async () => {
-                    await _mediator.Send(new SubtractFromStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
+                    return await _mediator.Send(new SubtractFromStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
                 } },
 
                 { (ActionType.InternalIssue, IsComplited: true), async () => {
-                    await _mediator.Send(new AddToStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
+                    return await _mediator.Send(new AddToStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
                 } },
 
                 { (ActionType.ExternalReceipt, IsComplited: true), async () => {
-                    await _mediator.Send(new SubtractFromStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
+                    return await _mediator.Send(new SubtractFromStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
                 } },
 
                 { (ActionType.ExternalIssue, IsComplited: true), async () => {
-                    await _mediator.Send(new AddToStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
+                    return await _mediator.Send(new AddToStockCommand(document.MainWarehouseId, document.DocumentEntries), cancellationToken);
                 } }
             };
 
@@ -61,9 +67,13 @@ namespace miniWms.Application.Functions.Documents.Commands.DeleteDocument
             {
                 await _transactionManager.BeginTransactionAsync();
 
-                await _documentsRepository.DeleteAsync(document);
+                if (!await _documentsRepository.DeleteAsync(document))
+                    throw new Exception("The document could not be deleted. [1]");
 
-                await operations[(document.ActionType, document.IsCompleted)].Invoke();
+                var resultOfOperations = await operations[(document.ActionType, document.IsCompleted)].Invoke();
+
+                if (!resultOfOperations.Success)
+                    throw new Exception("The document could not be deleted. [2]");
 
                 await _transactionManager.CommitTransactionAsync();
             }
