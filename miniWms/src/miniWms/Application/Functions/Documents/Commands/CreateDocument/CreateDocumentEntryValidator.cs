@@ -2,7 +2,7 @@
 using MediatR;
 using miniWms.Application.Functions.Products.Queries.GetProductById;
 
-namespace miniWms.Application.Functions.Documents.Commands
+namespace miniWms.Application.Functions.Documents.Commands.CreateDocument
 {
     public class CreateDocumentEntryValidator : AbstractValidator<CreateDocumentEntry>
     {

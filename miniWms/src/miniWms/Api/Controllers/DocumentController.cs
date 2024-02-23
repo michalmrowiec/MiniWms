@@ -5,6 +5,7 @@ using miniWms.Api.Services;
 using miniWms.Application.Functions.Documents.Commands.ApproveInternalDocument;
 using miniWms.Application.Functions.Documents.Commands.CreateDocument;
 using miniWms.Application.Functions.Documents.Commands.DeleteDocument;
+using miniWms.Application.Functions.Documents.Commands.UpdateDocument;
 using miniWms.Application.Functions.Documents.Queries.GetSortedAndFilteredDocuments;
 using miniWms.Domain.Entities;
 using miniWms.Domain.Models;
@@ -60,6 +61,21 @@ namespace miniWms.Api.Controllers
                 approveDocument.ModifiedBy = (Guid)_userContextService.GetUserId;
 
             var result = await _mediator.Send(approveDocument);
+
+            if (result.Success)
+            {
+                return Ok(result.ReturnedObj);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Document>> UpdateDocument([FromBody] UpdateDocumentCommand updateDocument)
+        {
+            if (_userContextService.GetUserId is not null)
+                updateDocument.ModifiedBy = (Guid)_userContextService.GetUserId;
+
+            var result = await _mediator.Send(updateDocument);
 
             if (result.Success)
             {
