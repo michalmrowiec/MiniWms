@@ -23,7 +23,7 @@ namespace miniWms.Application.Functions.WarehouseEntries.Commands.AddToStock
             List<WarehouseEntry> stockToCreate = [];
             List<WarehouseEntry> stockToUpdate = [];
 
-            var warehouseStock = await _mediator.Send(new GetForWarehouseQuery(request.WarehouseId));
+            var warehouseStock = await _mediator.Send(new GetWarehouseEntriesQuery(request.WarehouseId));
 
             foreach (var de in request.DocumentEntries)
             {
@@ -32,6 +32,7 @@ namespace miniWms.Application.Functions.WarehouseEntries.Commands.AddToStock
                 if (prodStock != null)
                 {
                     prodStock.Quantity += de.Quantity;
+                    prodStock.ModifiedAt = DateTime.UtcNow;
                     stockToUpdate.Add(prodStock);
                 }
                 else
