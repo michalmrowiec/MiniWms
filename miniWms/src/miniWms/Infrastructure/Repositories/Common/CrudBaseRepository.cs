@@ -34,7 +34,7 @@ namespace miniWms.Infrastructure.Repositories.Common
                 .Set<TEntity>()
                 .Remove(entity);
 
-            return await _context.SaveChangesAsync() == 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<IList<TEntity>> GetAllAsync()
